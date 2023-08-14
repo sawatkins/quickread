@@ -62,6 +62,7 @@ func main() {
 	app.Get("/", auth, handlers.Index)
 	app.Get("/doc", auth, handlers.Doc)
 	app.Get("/faq", auth, handlers.Faq)
+	app.Get("/import", auth, handlers.Import)
 
 	// Handle not founds
 	app.Use(handlers.NotFound)

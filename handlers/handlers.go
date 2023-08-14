@@ -28,3 +28,10 @@ func Faq(c *fiber.Ctx) error {
 	}, "layouts/main")
 }
 
+func Import(c *fiber.Ctx) error {
+	return c.Render("import", fiber.Map{
+		"Title": "Hello, Import!",
+	}, "layouts/main")
+}
+
+

@@ -24,21 +24,6 @@ a:hover {
   background-color: rgba(81, 91, 112, 0.175);
 }
 
-#create-server-button {
-  border: none;
-  color: white;
-  background-color: #2d7a40;
-  padding: 12px 28px;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 1em;
-  transition: all 0.3s;
-  display: block;
-  margin: 0 74px;
-}
-
 div#heading {
   display: flex;
   margin-top: 18px;
@@ -92,4 +77,35 @@ div#banner {
   font-weight: bold;
   width: 100%;
   margin: 0px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+#label-upload-doc {
+  border: 1px solid #ccc;
+  display: inline-block;
+  /* padding: 6px 12px; */
+  /* height: 24px; */
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#button-upload-doc {
+  border: 1px solid forestgreen;
+  background-color: forestgreen;
+  display: inline-block;
+  /* padding: 6px 12px; */
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: inherit;
 }
