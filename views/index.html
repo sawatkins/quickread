@@ -1,0 +1,54 @@
+{{template "partials/header" .}}
+{{template "partials/navbar" .}}
+
+<!-- <h1>{{.Title}}</h1> -->
+
+<div class="flexcontainer">
+    <div class="flexitem" id="welcome-text">
+        <h3>🚀&nbsp; Welcome to upfast.tf?</h3>
+        <ul>
+            <li>
+                <strong>Create TF2 servers</strong> using preset templates
+            </li>
+            <li>
+                <strong>No signup or payment</strong> required
+            </li>
+            <li>
+                Configure and deploy in <strong>minutes</strong>
+            </li>
+        </ul>
+
+        <button id="create-server-button" onclick="create_server_onclick()"><strong>Create Server</strong></button>
+
+        <p>
+            For more information, visit <a href="/faq">the FAQ</a>.
+        </p>
+    </div>
+    <div class="flexitem" id="public-servers">
+        <h3>🚢&nbsp; No friends? Join public servers here</h3>
+        <table id="public-servers-table">
+            <!-- <tr>
+                <th>Server Name</th>
+                <th>Players</th>
+                <th>Map</th>
+                <th>Connect</th>
+            </tr>
+            <tr>
+                <td>Server 1</td>
+                <td>0/24</td>
+                <td>cp_badlands</td>
+                <td><a href="steam://connect/">connect-></a></td>
+            </tr>
+            <tr>
+                <td>Server 2</td>
+                <td>0/24</td>
+                <td>cp_badlands</td>
+                <td><a href="steam://connect/">connect-></a></td>
+            </tr> -->
+        </table>
+    </div>
+</div>
+
+<script src="/js/nofriends.js"></script>
+
+{{template "partials/footer" .}}

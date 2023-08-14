@@ -1,0 +1,116 @@
+/* FOOTER */
+div.footer p {
+  color: #bababa;
+  font-size: 9pt;
+  line-height: 1.3em;
+}
+
+div.footer p a {
+  color: #bababa;
+}
+
+div.footer p a:visited {
+  color: #bababa;
+}
+
+a {
+  color: #9eb6dd;
+}
+
+/* a:visited {
+  color: #995bd7;
+} */
+a:hover {
+  background-color: rgba(0, 0, 0, 0.175);
+}
+
+#create-server-button {
+  border: none;
+  color: white;
+  background-color: #2d7a40;
+  padding: 12px 28px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 1em;
+  transition: all 0.3s;
+  display: block;
+  margin: 0 74px;
+}
+
+div#heading {
+  display: flex;
+  margin-top: 18px;
+}
+
+div#logo {
+  margin-right: 20px;
+}
+
+div#title h3 {
+  margin-top: -5px;
+  margin-left: 2px;
+  font-weight: 200;
+}
+
+body {
+  background-color: #374151;
+  color: #DEDEDE;
+  line-height: 1.4em;
+  width: 55%;
+  min-width: 750px;
+  margin: 15px auto;
+  font-family: "Play", sans-serif;
+}
+
+div.flexcontainer {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  align-items: flex-start; 
+}
+
+div.flexitem {
+  /* width: 48%; */
+  /* width: fit-content; */
+  margin: 0px 20px;
+
+}
+
+div#welcome-text {
+  /* flex-basis: auto; */
+
+  flex-basis: 45%;
+} 
+
+div#public-servers {
+  /* flex-basis: 66.6%; */
+  flex-basis: 100%;
+
+} 
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+div#banner {
+  text-align: center;
+  background-color: #DEDEDE;
+  color: #374151;
+  font-weight: bold;
+  width: 100%;
+  margin: 0px;
+}
+
+#your-servers {
+  text-align: center;
+}
