@@ -67,7 +67,6 @@ div#welcome-text {
   /* flex-basis: auto; */
 
   flex-basis: 45%;
-  padding-left: 15px;
 } 
 
 div#banner {
@@ -108,4 +107,14 @@ input[type="file"] {
   border-radius: 6px;
   font-family: inherit;
   font-size: inherit;
+}
+
+.content-area {
+  padding-left: 15px;
+}
+
+.small-text {
+  /* color: #bababa; */
+  font-size: 0.8rem;
+  line-height: 1.3em;
 }
