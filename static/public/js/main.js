@@ -1,14 +1,37 @@
 window.onload = function () {
 
-    document.getElementById("form-upload-doc").addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        // Handle form submission here, e.g., upload the file to a server
-        console.log("Form submitted");
-    });
+    uploadDoc();
 
     console.log("loaded main.js");
 
+}
+
+function uploadDoc() {
+    document.getElementById("form-upload-doc").addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const url = form.action;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(url, {
+                method: form.method,
+                body: formData
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                console.log('File uploaded successfully:', result);
+            } else {
+                console.error('File upload failed:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+
+        console.log("Form submitted");
+    });
 }
 
 function displayFileName() {

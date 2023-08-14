@@ -63,6 +63,8 @@ func main() {
 	app.Get("/doc", auth, handlers.Doc)
 	app.Get("/faq", auth, handlers.Faq)
 	app.Get("/import", auth, handlers.Import)
+	// Non-user routes
+	app.Post("/upload", handlers.UploadDoc)
 
 	// Handle not founds
 	app.Use(handlers.NotFound)

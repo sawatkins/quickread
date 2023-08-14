@@ -107,6 +107,7 @@ input[type="file"] {
   border-radius: 6px;
   font-family: inherit;
   font-size: inherit;
+  cursor: pointer;
 }
 
 .content-area {
