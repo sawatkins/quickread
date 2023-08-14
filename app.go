@@ -53,23 +53,14 @@ func main() {
 	auth := setAuth()
 
 	// Create a /api/v1 endpoint
-	v1 := app.Group("/api/v1")
-	serverApis := v1.Group("/server")
-	serverApis.Post("/createServer", handlers.CreateServer)
-	serverApis.Get("/getServer", handlers.GetServer)
-	serverApis.Get("/getAllServers", handlers.GetAllServers)
-	serverApis.Post("/updateServer", handlers.UpdateServer)
-	serverApis.Delete("/deleteServer", handlers.DeleteServer)
+	// v1 := app.Group("/api/v1")
+	// userApis := v1.Group("/user")
+	// userApis.Post("/createUser", handlers.CreateUser)
 
-	userApis := v1.Group("/user")
-	userApis.Post("/createUser", handlers.CreateUser)
-	userApis.Get("/getUser", handlers.GetUser)
-	userApis.Get("/getAllUsers", handlers.GetAllUsers)
-	userApis.Delete("/deleteUser", handlers.DeleteUser)
 
 	// Routes
 	app.Get("/", auth, handlers.Index)
-	app.Get("/servers", auth, handlers.Servers)
+	app.Get("/doc", auth, handlers.Doc)
 	app.Get("/faq", auth, handlers.Faq)
 
 	// Handle not founds

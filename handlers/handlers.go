@@ -16,9 +16,9 @@ func Index(c *fiber.Ctx) error {
 	}, "layouts/main")
 }
 
-func Servers(c *fiber.Ctx) error {
-	return c.Render("servers", fiber.Map{
-		"Title": "Hello, Servers!",
+func Doc(c *fiber.Ctx) error {
+	return c.Render("doc", fiber.Map{
+		"Title": "Hello, Doc!",
 	}, "layouts/main")
 }
 
@@ -27,5 +27,4 @@ func Faq(c *fiber.Ctx) error {
 		"Title": "Hello, FAQ!",
 	}, "layouts/main")
 }
-
 

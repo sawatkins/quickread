@@ -21,7 +21,7 @@ a {
   color: #995bd7;
 } */
 a:hover {
-  background-color: rgba(0, 0, 0, 0.175);
+  background-color: rgba(81, 91, 112, 0.175);
 }
 
 #create-server-button {
@@ -55,7 +55,7 @@ div#title h3 {
 }
 
 body {
-  background-color: #374151;
+  background-color: #1a1b1e; /* #374151; */
   color: #DEDEDE;
   line-height: 1.4em;
   width: 55%;
@@ -82,25 +82,8 @@ div#welcome-text {
   /* flex-basis: auto; */
 
   flex-basis: 45%;
+  padding-left: 15px;
 } 
-
-div#public-servers {
-  /* flex-basis: 66.6%; */
-  flex-basis: 100%;
-
-} 
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  margin: 0px;
-}
-
-th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
 
 div#banner {
   text-align: center;
@@ -109,8 +92,4 @@ div#banner {
   font-weight: bold;
   width: 100%;
   margin: 0px;
-}
-
-#your-servers {
-  text-align: center;
 }
