@@ -4,8 +4,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/sawatkins/upfast.tf-go/database"
-	"github.com/sawatkins/upfast.tf-go/models"
+	"github.com/sawatkins/quickread/database"
+	"github.com/sawatkins/quickread/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/xyproto/randomstring"
@@ -18,7 +18,7 @@ func CreateUser(c *fiber.Ctx) error {
 	randString := randomstring.HumanFriendlyString(10)
 
 	newUser := models.User{
-		Id: randString,
+		Id:        randString,
 		CreatedOn: time.Now().Format("2006-01-02 15:04:05 UTC-0700"),
 	}
 
@@ -27,15 +27,15 @@ func CreateUser(c *fiber.Ctx) error {
 		log.Println(err)
 		return c.Status(500).JSON(fiber.Map{
 			"success": false,
-			"error": "Failed to add user \"" + newUser.Id + "\" to database",
+			"error":   "Failed to add user \"" + newUser.Id + "\" to database",
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
-		"success": true,
-		"user":    newUser,
+		"success":    true,
+		"user":       newUser,
 		"insertedID": insertedId,
-	})	 
+	})
 }
 
 // GetUser returns a user
@@ -46,7 +46,7 @@ func GetUser(c *fiber.Ctx) error {
 		log.Println(err)
 		return c.Status(500).JSON(fiber.Map{
 			"success": false,
-			"error": "Failed to get user \"" + c.Query("id") + "\" from database",
+			"error":   "Failed to get user \"" + c.Query("id") + "\" from database",
 		})
 	}
 
@@ -70,12 +70,12 @@ func DeleteUser(c *fiber.Ctx) error {
 		log.Println(err)
 		return c.Status(500).JSON(fiber.Map{
 			"success": false,
-			"error": "Failed to delete user \"" + c.Query("id") + "\" from database",
+			"error":   "Failed to delete user \"" + c.Query("id") + "\" from database",
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
-		"success": true,
+		"success":      true,
 		"itemsDeleted": itemsDeleted,
 	})
 }

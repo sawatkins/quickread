@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/sawatkins/upfast.tf-go/models"
+	"github.com/sawatkins/quickread/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 )

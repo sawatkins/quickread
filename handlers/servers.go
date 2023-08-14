@@ -3,8 +3,8 @@ package handlers
 import (
 	"time"
 
-	"github.com/sawatkins/upfast.tf-go/database"
-	"github.com/sawatkins/upfast.tf-go/models"
+	"github.com/sawatkins/quickread/database"
+	"github.com/sawatkins/quickread/models"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/xyproto/randomstring"
@@ -21,8 +21,8 @@ func CreateServer(c *fiber.Ctx) error {
 		UserId:      c.Query("user_id"),
 		StartingMap: c.Query("starting_map"),
 		Region:      c.Query("region"),
-		Status: 	 c.Query("status"),
-		Public:      parseBool(c.Query("public")), 
+		Status:      c.Query("status"),
+		Public:      parseBool(c.Query("public")),
 		CreatedOn:   time.Now().Format("2006-01-02 15:04:05 UTC-0700"),
 	}
 
@@ -110,8 +110,8 @@ func UpdateServer(c *fiber.Ctx) error {
 	itemsUpdated, err := database.UpdateServer(c.Query("id"), server)
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
-			"success": false,
-			"error":   "Failed to update server \"" + c.Query("id") + "\" in database",
+			"success":       false,
+			"error":         "Failed to update server \"" + c.Query("id") + "\" in database",
 			"error_message": err.Error(),
 		})
 	}
@@ -146,8 +146,8 @@ func GetActivePublicServers(c *fiber.Ctx) error {
 	servers, err := database.GetActivePublicServers()
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
-			"success": false,
-			"error":   "Failed to get all active public servers from database",
+			"success":       false,
+			"error":         "Failed to get all active public servers from database",
 			"error_message": err.Error(),
 		})
 	}

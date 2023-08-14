@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/sawatkins/upfast.tf-go/handlers"
+	"github.com/sawatkins/quickread/handlers"
 
 	"flag"
 	"log"

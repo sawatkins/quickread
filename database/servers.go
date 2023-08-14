@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/sawatkins/upfast.tf-go/models"
+	"github.com/sawatkins/quickread/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -95,7 +95,7 @@ func UpdateServer(id string, server models.Server) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return result.UpsertedID, nil
 }
 
