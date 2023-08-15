@@ -15,17 +15,28 @@ window.onload = function () {
 
             if (response.ok) {
                 const result = await response.json();
+                displayUploadSuccess();
                 console.log('File uploaded successfully:', result);
             } else {
+                displayUploadFailure(response.statusText);
                 console.error('File upload failed:', response.statusText);
             }
         } catch (error) {
+            displayUploadFailure(error);
             console.error('Error uploading file:', error);
         }
 
         console.log("Form submitted");
     });
 
+}
+
+function displayUploadSuccess() {
+
+}
+
+function displayUploadFailure(error) {
+    
 }
 
 

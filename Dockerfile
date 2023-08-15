@@ -6,9 +6,9 @@ COPY . .
 
 RUN go mod download
 
-RUN go build -o upfast .
+RUN go build -o quickread .
 
 EXPOSE 8080
 
-CMD ["/app/upfast", "-prefork=false", "-port=:8080"]
+CMD ["/app/quickread", "-prefork=false", "-port=:8080"]
 
