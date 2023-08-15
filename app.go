@@ -33,8 +33,8 @@ func main() {
 
 	// Create a new engine
 	engine := html.New("./views", ".html")
-	engine.Reload(true)
-	engine.Debug(true)
+	engine.Reload(true) // disable in prod
+	engine.Debug(true) // disable in prod
 
 	// Create fiber app
 	app := fiber.New(fiber.Config{
