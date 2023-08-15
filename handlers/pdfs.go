@@ -32,7 +32,7 @@ func UploadDoc(c *fiber.Ctx) error {
 	defer src.Close()
 
 	// TODO make these in a seperate function so i can just call once to get the cfg (or client)
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-west-1"))
 	if err != nil {
 		c.Status(fiber.StatusInternalServerError).JSON("AWS configuration failed")
 		log.Fatalf("failed to load configuration, %v", err)

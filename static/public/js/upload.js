@@ -21,6 +21,7 @@ window.onload = function () {
             if (response.ok) {
                 const result = await response.json();
                 displayUploadSuccess();
+                toggleElementByID("div-doc-pages-selection");
                 console.log('File uploaded successfully:', result);
             } else {
                 displayUploadFailure(response.statusText);
@@ -67,5 +68,14 @@ function displayFileName() {
         fileName.textContent = "File: " + fileInput.files[0].name;
     } else {
         fileName.textContent = '';
+    }
+}
+
+function toggleElementByID(elementToToggle) {
+    const element = document.getElementById(elementToToggle);
+    if (element.style.display === "none") {
+        element.style.display = "block";
+    } else {
+        element.style.display = "none";
     }
 }
