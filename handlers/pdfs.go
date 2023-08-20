@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	kagi "github.com/httpjamesm/kagigo"
 )
 
 const PDF_UPLOAD_BUCKET_NAME string = "coretext-pdfs-general"
@@ -53,4 +55,28 @@ func UploadDoc(c *fiber.Ctx) error {
 	fmt.Println("File uploaded successfully!")
 	log.Println("File uploaded successfully!")
 	return c.JSON("File uploaded successfully!")
+}
+
+func SummarizePDF(c *fiber.Ctx) error {
+	// data validation & error handling todo here
+	url := c.Query("url")
+
+	// todo move this somewhere else
+	kagiClient := kagi.NewClient(&kagi.ClientConfig{
+		APIKey:     os.Getenv("KAGI_API_KEY"),
+		APIVersion: "v0",
+	})
+
+	response, err := kagiClient.UniversalSummarizerCompletion(kagi.UniversalSummarizerParams{
+		URL:         url,
+		SummaryType: kagi.SummaryTypeSummary,
+		Engine:      kagi.SummaryEngineCecil,
+	})
+	if err != nil {
+		fmt.Println(err)
+		return c.Status(fiber.StatusInternalServerError).JSON("Summarize PDF failed")
+	}
+	// todo log the meta data response
+	fmt.Println(response.Data.Output)
+	return c.Status(200).JSON(response.Data.Output)
 }

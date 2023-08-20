@@ -1,8 +1,8 @@
 package models
 
 type Document struct {
-	Id        string `json:"id"`
+	Id        int64  `json:"id"`
+	Filename  string `json:"filename"`
 	Url       string `json:"url"`
-	User      string `json:"username,omitempty" json:"username,omitempty"`
-	CreatedOn string `json:"created_on" json:"created_on"`
+	CreatedOn string `json:"created_on"`
 }

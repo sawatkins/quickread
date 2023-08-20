@@ -65,6 +65,7 @@ func main() {
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
 	app.Post("/upload", handlers.UploadDoc)
+	app.Get("/summarize_pdf", handlers.SummarizePDF)
 
 	// Handle not founds
 	app.Use(handlers.NotFound)
