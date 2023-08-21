@@ -6,3 +6,10 @@ type User struct {
 	Username  string `json:"username,omitempty" json:"username,omitempty"`
 	CreatedOn string `json:"created_on" json:"created_on"`
 }
+
+type PDFDocument struct {
+	Id        int  		`json:"id"`
+	Filename  string 	`json:"filename"`
+	Url       string 	`json:"url"`
+	CreatedOn string 	`json:"created_on"`
+}
