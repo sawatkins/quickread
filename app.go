@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/sawatkins/quickread/handlers"
+	"github.com/sawatkins/quickread/models"
 
 	"flag"
 	"log"
@@ -45,6 +46,8 @@ func main() {
 
 	// Create sessions
 	sessionStore := session.New()
+	sessionStore.RegisterType(models.PDFDocument{})
+	// app.Use(sessionStore) // what does this do? is is necessary?
 
 	// Middleware
 	app.Use(recover.New())

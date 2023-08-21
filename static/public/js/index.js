@@ -1,5 +1,5 @@
 window.onload = function () {
-    console.log("loaded upload.js");
+    console.log("loaded index.js");
 
     clearUploadResult();
 
@@ -20,15 +20,12 @@ window.onload = function () {
 
             if (response.ok) {
                 const result = await response.json();
-                displayUploadSuccess();
-                toggleElementByID("div-doc-pages-selection");
+                // toggleDisplayByElementID("div-doc-pages-selection");
                 console.log('File uploaded successfully:', result);
             } else {
-                displayUploadFailure(response.statusText);
                 console.error('File upload failed:', response.statusText);
             }
         } catch (error) {
-            displayUploadFailure(error);
             console.error('Error uploading file:', error);
         }
 
@@ -67,24 +64,24 @@ async function displayPDFSummaryResponse() {
 
 // Displays succes message on upload success
 function displayUploadSuccess() {
-    const resultStatusText = document.getElementById("upload-result-status");
-    resultStatusText.textContent = "File uploaded successfully"
+    // const resultStatusText = document.getElementById("upload-result-status");
+    // resultStatusText.textContent = "File uploaded successfully"
 }
 
 // Displays failure and error message on upload failure
 function displayUploadFailure(error) {
-    const resultStatusText = document.getElementById("upload-result-status");
+    // const resultStatusText = document.getElementById("upload-result-status");
     // const resultStatusTextError = document.getElementById("upload-result-status-error");
-    resultStatusText.textContent = "File upload failed. Please try again or submit a bug report.";
+    // resultStatusText.textContent = "File upload failed. Please try again or submit a bug report.";
     // resultStatusTextError.textContent = error;
 }
 
 // Clears the upload result status text
 function clearUploadResult() {
-    const resultStatusText = document.getElementById("upload-result-status");
-    const resultStatusTextError = document.getElementById("upload-result-status-error")
-    resultStatusText.textContent = "";
-    resultStatusTextError.textContent = "";
+    // const resultStatusText = document.getElementById("upload-result-status");
+    // const resultStatusTextError = document.getElementById("upload-result-status-error")
+    // resultStatusText.textContent = "";
+    // resultStatusTextError.textContent = "";
 }
 
 // Displays the file name in the UI after user selection
@@ -99,7 +96,7 @@ function displayFileName() {
     }
 }
 
-function toggleElementByID(elementToToggle) {
+function toggleDisplayByElementID(elementToToggle) {
     const element = document.getElementById(elementToToggle);
     if (element.style.display === "none") {
         element.style.display = "block";
