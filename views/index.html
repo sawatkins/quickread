@@ -8,24 +8,53 @@
         <h3>🚀&nbsp; Welcome to quickread!</h3>
         <ul>
             <li>
-                <strong>Summarize </strong>PDFs 
+                <strong>Summarize </strong>PDFs or pasted text
             </li>
             <li>
-                <strong>Text-to-Speech </strong>the Pdfs 
+                Listen back with <strong>Text-to-Speech </strong>
             </li>
-            <li>
-                <strong>Speed read </strong>the Pdfs 
-            </li>
-            <li>
+            <!-- <li>
+                <strong>Speed read </strong>the Pdfs
+            </li> -->
+            <!-- <li>
                 <strong>No signup or payment</strong> required
-            </li>
+            </li> -->
         </ul>
-
-        <p>
-            For more information, visit <a href="/faq">the FAQ</a>.
-        </p>
     </div>
-
+</div>
+<div class="content-area">
+    <hr>
+    <div class="content-area">
+        <p><strong>Step 1:</strong> Import a PDF document or paste text</p>
+        <div id="div-upload-doc" class="content-area">
+            <p>Option 1: PDF document. <span class="small-text">(Max file size 15MB)</span></p>
+            <form id='form-upload-doc' class="content-area" action="/upload" method="post"
+                enctype="multipart/form-data">
+                <label id="label-upload-doc" for="input-upload-doc">Browse File</label>
+                <input id="input-upload-doc" name="input-upload-doc" type="file"
+                    onchange="displayFileName()">&nbsp;&nbsp;
+                <button id="button-upload-doc" type="submit">Upload</button>&nbsp;&nbsp;
+                <p id="upload-result-status" style="display: inline;"></p>
+                <span id="upload-result-status-error" class="small-text" style="display: inline;"></span>
+            </form>
+            <p id="upload-doc-filename" class="small-text"></p>
+        </div>
+        <div id="div-paste-text" class="content-area">
+            <p>Option 2: Paste text</p>
+            <form id="form-paste-text" class="content-area" action="/paste" method="post">
+                <!-- <label for="label-paste-text">Text to paste:</label> -->
+                <textarea id="textarea-paste-text" name="textarea-paste-text" placeholder="Paste text here..."></textarea>
+                <p class="small-text"></p>
+                <button id="button-paste-text" type="submit">Import</button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="content-area">
+    <hr>
+    <div class="content-area">
+        <p><strong>Step 2:</strong> Browse document in <a href="/doc">Documents</a></p>
+    </div>
 </div>
 
 
