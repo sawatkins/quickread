@@ -71,7 +71,7 @@ func main() {
 	app.Get("/faq", auth, handlers.Faq)
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
-	app.Post("/upload", handlers.UploadDoc)
+	app.Post("/upload", handlers.UploadPDFDoc(sessionStore))
 	app.Get("/summarize_pdf", handlers.SummarizePDF)
 
 	// Handle not founds
