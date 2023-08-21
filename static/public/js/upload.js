@@ -47,7 +47,7 @@ async function displayPDFSummaryResponse() {
         const params = new URLSearchParams();
         // params.append("url", ); // get url of pdf in s3 here.
 
-        
+
         const url = "/summarize_pdf?" + params;
         const response = await fetch(url, {
             method: "POST",
@@ -55,15 +55,11 @@ async function displayPDFSummaryResponse() {
 
         if (response.ok) {
             const result = await response.json();
-            displayUploadSuccess();
-            toggleElementByID("div-doc-pages-selection");
-            console.log('File uploaded successfully:', result);
+            console.log(' successfully:', result);
         } else {
-            displayUploadFailure(response.statusText);
-            console.error('File upload failed:', response.statusText);
+            console.error(' failed:', response.statusText);
         }
     } catch (error) {
-        displayUploadFailure(error);
         console.error('Error uploading file:', error);
     }
     // update the elemeent witht he text

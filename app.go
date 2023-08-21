@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
+	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
 )
 
@@ -42,6 +43,9 @@ func main() {
 		Views:   engine,
 	})
 
+	// Create sessions
+	sessionStore := session.New()
+
 	// Middleware
 	app.Use(recover.New())
 	app.Use(logger.New())
@@ -59,8 +63,8 @@ func main() {
 
 
 	// Routes
-	app.Get("/", auth, handlers.Index)
-	app.Get("/doc", auth, handlers.Doc)
+	app.Get("/", auth, handlers.Index(sessionStore))
+	app.Get("/doc", auth, handlers.Doc(sessionStore))
 	app.Get("/faq", auth, handlers.Faq)
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes

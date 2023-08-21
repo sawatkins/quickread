@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"log"
+
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/session"
 )
 
 // NotFound returns custom 404 page
@@ -9,17 +12,30 @@ func NotFound(c *fiber.Ctx) error {
 	return c.Status(404).SendFile("./static/private/404.html")
 }
 
-func Index(c *fiber.Ctx) error {
-	// Render index within layouts/main
-	return c.Render("index", fiber.Map{
-		"Title": "Hello, World!",
-	}, "layouts/main")
+func Index(sessionStore *session.Store) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		session, _ := sessionStore.Get(c)
+		session.Set("name", "john")
+		log.Println(session)
+		log.Println(session.Get("name"))
+		session.Save()
+		return c.Render("index", fiber.Map{
+			"Title": "Hello, World!",
+		}, "layouts/main")
+	}
 }
 
-func Doc(c *fiber.Ctx) error {
-	return c.Render("doc", fiber.Map{
-		"Title": "Hello, Doc!",
-	}, "layouts/main")
+func Doc(sessionStore *session.Store) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		session, _ := sessionStore.Get(c)
+		log.Println(session)
+		log.Println(session.Get("name"))
+		session.Save()
+		return c.Render("doc", fiber.Map{
+			"Title": "Hello, Doc!",
+		}, "layouts/main")
+	}
+	
 }
 
 func Faq(c *fiber.Ctx) error {
@@ -33,5 +49,3 @@ func Import(c *fiber.Ctx) error {
 		"Title": "Hello, Import!",
 	}, "layouts/main")
 }
-
-
