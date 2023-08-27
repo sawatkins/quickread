@@ -1,8 +1,25 @@
 <!-- {{template "partials/header" .}} -->
 {{template "partials/navbar" .}}
 
-<h1>{{.Title}}</h1>
+{{$numDocs := .numDocs}}
 
+<h1>{{.Title}}</h1>
+<p>The value of numDocs is {{$numDocs}} or {{.numDocs}}.</p>
+
+{{if .numDocs}}
+<p>There are docs to show!</p>
+{{else}}
+<p>No docs to show</p>
+{{end}}
+
+<p>PDF Documents:</p>
+{{range .pdfDocuments}}
+<div>
+    <p>Filename: {{.Filename}}</p>
+</div>
+{{end}}
+
+<!-- make text if there aren't any docs in the session -->
 
 
 

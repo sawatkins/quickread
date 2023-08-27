@@ -58,6 +58,7 @@ func UploadPDFDoc(sessionStore *session.Store) fiber.Handler {
 		}
 
 		// get presign url
+		// todo: since there is a expiration time, maybe check to see if url exists and create a new one id doesn't. or just create a function for getting the presigned url for a given name.
 		presignedUrl, err := presignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
 			Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
 			Key:    aws.String(file.Filename),
@@ -69,7 +70,7 @@ func UploadPDFDoc(sessionStore *session.Store) fiber.Handler {
 			return c.Status(500).JSON("Filed to generate pre-signed url")
 
 		}
-		fmt.Println("presigned url generated successfully")
+		fmt.Println("presigned url generated successfully:")
 		fmt.Println(presignedUrl.URL)
 
 		// store info in session
@@ -94,6 +95,9 @@ func UploadPDFDoc(sessionStore *session.Store) fiber.Handler {
 		session.Set("pdfDocuments", pdfDocuments)
 
 		session.Save()
+
+		fmt.Println(session)
+		fmt.Println(session.Get("pdfDocuments"))
 
 		log.Println("File uploaded successfully!")
 		return c.JSON("File uploaded successfully!")

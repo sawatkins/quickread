@@ -46,7 +46,7 @@ func main() {
 
 	// Create sessions
 	sessionStore := session.New()
-	sessionStore.RegisterType(models.PDFDocument{})
+	sessionStore.RegisterType([]models.PDFDocument{})
 	// app.Use(sessionStore) // what does this do? is is necessary?
 
 	// Middleware
@@ -68,6 +68,8 @@ func main() {
 	// Routes
 	app.Get("/", auth, handlers.Index(sessionStore))
 	app.Get("/doc", auth, handlers.Doc(sessionStore))
+	app.Get("/summarize", auth, handlers.Summarize)
+	app.Get("/listen", auth, handlers.Listen)
 	app.Get("/faq", auth, handlers.Faq)
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
