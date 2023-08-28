@@ -9,19 +9,16 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/session"
-	"github.com/sawatkins/quickread/models"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/google/uuid"
 	kagi "github.com/httpjamesm/kagigo"
 )
 
 const PDF_UPLOAD_BUCKET_NAME string = "coretext-pdfs-general"
 const PDF_UPLOAD_ACCESS_POINT string = "coretext-pdfs-genera-meymo4pyxf87dr89ry53a3hzzercgusw1b-s3alias"
 
-func UploadPDFDoc(sessionStore *session.Store) fiber.Handler {
+func UploadPDFDoc(sessionStore *session.Store, s3Client *s3.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// upload size validation
 		// pdf filetype validation
@@ -37,17 +34,8 @@ func UploadPDFDoc(sessionStore *session.Store) fiber.Handler {
 		}
 		defer src.Close()
 
-		// TODO make these in a seperate function so i can just call once to get the cfg (or client)
-		cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-west-1"))
-		if err != nil {
-			c.Status(fiber.StatusInternalServerError).JSON("AWS configuration failed")
-			log.Printf("failed to load configuration, %v", err)
-		}
-		client := s3.NewFromConfig(cfg)
-		presignClient := s3.NewPresignClient(client)
-
 		// upload to s3
-		_, err = client.PutObject(context.TODO(), &s3.PutObjectInput{
+		_, err = s3Client.PutObject(context.TODO(), &s3.PutObjectInput{
 			Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
 			Key:    aws.String(file.Filename), // TODO hash filename and store in databse?
 			Body:   src,
@@ -57,74 +45,77 @@ func UploadPDFDoc(sessionStore *session.Store) fiber.Handler {
 			return c.Status(fiber.StatusInternalServerError).JSON("File upload to S3 failed")
 		}
 
-		// get presign url
-		// todo: since there is a expiration time, maybe check to see if url exists and create a new one id doesn't. or just create a function for getting the presigned url for a given name.
-		presignedUrl, err := presignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
-			Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
-			Key:    aws.String(file.Filename),
-		}, func(po *s3.PresignOptions) {
-			po.Expires = 24 * time.Hour
-		})
-		if err != nil {
-			log.Printf("Filed to generate pre-signed url: %v\n", err)
-			return c.Status(500).JSON("Filed to generate pre-signed url")
+		// // store info in session
+		// session, err := sessionStore.Get(c)
+		// if err != nil {
+		// 	return err
+		// }
+		// // crete empty []models.PDFDocument{} is doens't exist
+		// if session.Get("pdfDocuments") == nil {
+		// 	session.Set("pdfDocuments", []models.PDFDocument{})
+		// }
+		// // create pdfdocument with data from this request
+		// pdfdoc := models.PDFDocument{
+		// 	Id:        uuid.NewString(),
+		// 	Filename:  file.Filename,
+		// 	Url:       presignedUrl.URL,
+		// 	CreatedOn: time.Now().Format("2006-01-02 15:04:05"),
+		// }
+		// // add it to array of pdfdocuments
+		// pdfDocuments := session.Get("pdfDocuments").([]models.PDFDocument)
+		// pdfDocuments = append(pdfDocuments, pdfdoc)
+		// session.Set("pdfDocuments", pdfDocuments)
 
-		}
-		fmt.Println("presigned url generated successfully:")
-		fmt.Println(presignedUrl.URL)
+		// session.Save()
 
-		// store info in session
-		session, err := sessionStore.Get(c)
-		if err != nil {
-			return err
-		}
-		// crete empty []models.PDFDocument{} is doens't exist
-		if session.Get("pdfDocuments") == nil {
-			session.Set("pdfDocuments", []models.PDFDocument{})
-		}
-		// create pdfdocument with data from this request
-		pdfdoc := models.PDFDocument{
-			Id:        uuid.NewString(),
-			Filename:  file.Filename,
-			Url:       presignedUrl.URL,
-			CreatedOn: time.Now().Format("2006-01-02 15:04:05"),
-		}
-		// add it to array of pdfdocuments
-		pdfDocuments := session.Get("pdfDocuments").([]models.PDFDocument)
-		pdfDocuments = append(pdfDocuments, pdfdoc)
-		session.Set("pdfDocuments", pdfDocuments)
-
-		session.Save()
-
-		fmt.Println(session)
-		fmt.Println(session.Get("pdfDocuments"))
+		// fmt.Println(session)
+		// fmt.Println(session.Get("pdfDocuments"))
 
 		log.Println("File uploaded successfully!")
-		return c.JSON("File uploaded successfully!")
+		return c.Status(200).SendString("File uploaded successfully!")
 	}
 
 }
 
-func SummarizePDF(c *fiber.Ctx) error {
-	// data validation & error handling todo here
-	url := c.Query("url")
+func SummarizePDF(s3PresignClient *s3.PresignClient) fiber.Handler {
+	return func(c *fiber.Ctx) error {
+		// data validation & error handling todo here
+		filename := c.Query("filename")
+		presignedUrl := getPresignedUrl(filename, s3PresignClient)
+		fmt.Println("filename: " + filename)
+		fmt.Println("presign url: " + presignedUrl)
 
-	// todo move this somewhere else
-	kagiClient := kagi.NewClient(&kagi.ClientConfig{
-		APIKey:     os.Getenv("KAGI_API_KEY"),
-		APIVersion: "v0",
-	})
+		// todo move this somewhere else (to app.go and pass in)
+		kagiClient := kagi.NewClient(&kagi.ClientConfig{
+			APIKey:     os.Getenv("KAGI_API_KEY"),
+			APIVersion: "v0",
+		})
 
-	response, err := kagiClient.UniversalSummarizerCompletion(kagi.UniversalSummarizerParams{
-		URL:         url,
-		SummaryType: kagi.SummaryTypeSummary,
-		Engine:      kagi.SummaryEngineCecil,
+		response, err := kagiClient.UniversalSummarizerCompletion(kagi.UniversalSummarizerParams{
+			URL:         presignedUrl,
+			SummaryType: kagi.SummaryTypeSummary,
+			Engine:      kagi.SummaryEngineCecil,
+		})
+		if err != nil {
+			fmt.Println(err)
+			return c.Status(fiber.StatusInternalServerError).JSON("Summarize PDF failed")
+		}
+		// todo log the meta data response
+		fmt.Println(response.Data.Output)
+		return c.Status(200).JSON(response.Data.Output)
+	}
+}
+
+func getPresignedUrl(filename string, s3PresignClient *s3.PresignClient) string {
+	presignedUrl, err := s3PresignClient.PresignGetObject(context.TODO(), &s3.GetObjectInput{
+		Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
+		Key:    aws.String(filename),
+	}, func(po *s3.PresignOptions) {
+		po.Expires = 24 * time.Hour
 	})
 	if err != nil {
-		fmt.Println(err)
-		return c.Status(fiber.StatusInternalServerError).JSON("Summarize PDF failed")
+		log.Printf("Filed to generate pre-signed url: %v\n", err)
+		return ""
 	}
-	// todo log the meta data response
-	fmt.Println(response.Data.Output)
-	return c.Status(200).JSON(response.Data.Output)
+	return presignedUrl.URL
 }

@@ -1,11 +1,10 @@
 package main
 
 import (
-	"github.com/sawatkins/quickread/handlers"
-	"github.com/sawatkins/quickread/models"
-
+	"context"
 	"flag"
 	"log"
+	
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
@@ -13,6 +12,11 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/sawatkins/quickread/handlers"
+	"github.com/sawatkins/quickread/models"
+	"github.com/joho/godotenv"
 )
 
 var (
@@ -21,17 +25,23 @@ var (
 )
 
 func main() {
-	// Parse command-line flags
 	flag.Parse()
 
-	// Load .env file
-	//err := godotenv.Load()
-	//if err != nil {
-	//    log.Println("Error loading .env file")
-	//}
+	err := godotenv.Load()
+	if err != nil {
+	   log.Fatal("Error loading .env file")
+	}
 
 	// Connected with database
 	//database.Connect()
+
+	// Load AWS credentials
+	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-west-1"))
+	if err != nil {
+		log.Printf("Failed to load AWS configuration, %v", err)
+	}
+	s3Client := s3.NewFromConfig(cfg)
+	s3PresignClient := s3.NewPresignClient(s3Client)
 
 	// Create a new engine
 	engine := html.New("./views", ".html")
@@ -64,7 +74,6 @@ func main() {
 	// userApis := v1.Group("/user")
 	// userApis.Post("/createUser", handlers.CreateUser)
 
-
 	// Routes
 	app.Get("/", auth, handlers.Index(sessionStore))
 	app.Get("/doc", auth, handlers.Doc(sessionStore))
@@ -73,8 +82,8 @@ func main() {
 	app.Get("/faq", auth, handlers.Faq)
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
-	app.Post("/upload", handlers.UploadPDFDoc(sessionStore))
-	app.Get("/summarize_pdf", handlers.SummarizePDF)
+	app.Post("/upload", handlers.UploadPDFDoc(sessionStore, s3Client))
+	app.Get("/summarize_pdf", handlers.SummarizePDF(s3PresignClient))
 
 	// Handle not founds
 	app.Use(handlers.NotFound)

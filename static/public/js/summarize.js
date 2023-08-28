@@ -1,5 +1,5 @@
 window.onload = function () {
-    console.log("loaded index.js");
+    console.log("loaded summarize.js");
 
     clearUploadResult();
 
@@ -36,30 +36,40 @@ window.onload = function () {
 
 //
 async function displayPDFSummaryResponse() {
-    // get element to display
-    const summaryResponse = document.getElementById("summary-response");
+    const summaryResponse = document.getElementById("div-summary-response");
+    fetch("/summarize_pdf?" + params, {
+        method: "GET"
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.log(error)
+        })
 
-    // make fetch request to summary endpoint
-    try {
+    // update the elemeent witht the text
+}
+
+async function getPresignedUrlFromS3() {
+    const fileInput = document.getElementById('input-upload-doc');
+    let presignUrl = "";
+    if (fileInput.files.length > 0) {
         const params = new URLSearchParams();
-        // params.append("url", ); // get url of pdf in s3 here.
+        params.append("filename", fileInput.files[0].name);
+        fetch('/get_presigned_url?' + params)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                return "";
+            })
+            .catch(error => {
+                // Handle any errors
+                console.error(error);
+            });
 
-
-        const url = "/summarize_pdf?" + params;
-        const response = await fetch(url, {
-            method: "POST",
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(' successfully:', result);
-        } else {
-            console.error(' failed:', response.statusText);
-        }
-    } catch (error) {
-        console.error('Error uploading file:', error);
     }
-    // update the elemeent witht he text
+    return presignUrl;
 }
 
 // Displays succes message on upload success
@@ -96,10 +106,12 @@ function displayFileName() {
     }
 }
 
+
+
 function toggleDisplayByElementID(elementToToggle) {
     const element = document.getElementById(elementToToggle);
     if (element.style.display === "none") {
-        element.style.display = "block";
+        element.style.display = "block"; // maybe just have a way to remove the attribute instead
     } else {
         element.style.display = "none";
     }

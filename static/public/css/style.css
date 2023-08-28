@@ -98,9 +98,13 @@ input[type="file"] {
   cursor: pointer;
 }
 
+#label-upload-doc:hover {
+  background-color: #2d2e33;
+}
+
 #button-upload-doc, #button-paste-text {
-  border: 1px solid forestgreen;
-  background-color: forestgreen;
+  border: 1px solid #228b22;
+  background-color: #228b22;
   display: inline-block;
   /* padding: 6px 12px; */
   padding-top: 3px;
@@ -111,6 +115,11 @@ input[type="file"] {
   font-family: inherit;
   font-size: inherit;
   cursor: pointer;
+}
+
+#button-upload-doc:hover,
+#button-paste-text:hover {
+  background-color: #0ea00e; 
 }
 
 .content-area {
@@ -125,8 +134,8 @@ input[type="file"] {
 }
 
 textarea {
-  width: 100%;
-  height: 80px;
+  width: 66%;
+  height: 55px;
   padding: 12px;
   border: 1px solid #ccc;
   background-color: #23272a;
