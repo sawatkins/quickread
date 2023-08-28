@@ -102,7 +102,7 @@ input[type="file"] {
   background-color: #2d2e33;
 }
 
-#button-upload-doc, #button-paste-text {
+.action-button {
   border: 1px solid #228b22;
   background-color: #228b22;
   display: inline-block;
@@ -117,8 +117,7 @@ input[type="file"] {
   cursor: pointer;
 }
 
-#button-upload-doc:hover,
-#button-paste-text:hover {
+.action-button:hover {
   background-color: #0ea00e; 
 }
 

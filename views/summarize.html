@@ -5,12 +5,10 @@
 
 <div id="div-upload-doc" class="content-area">
     <p>Step 1: PDF document. <span class="small-text">(Max file size 15MB)</span></p>
-    <form id='form-upload-doc' class="content-area" action="/upload" method="post"
-        enctype="multipart/form-data">
+    <form id='form-upload-doc' class="content-area" action="/upload" method="post" enctype="multipart/form-data">
         <label id="label-upload-doc" for="input-upload-doc">Browse File</label>
-        <input id="input-upload-doc" name="input-upload-doc" type="file"
-            onchange="displayFileName()">&nbsp;&nbsp;
-        <button id="button-upload-doc" type="submit">Upload</button>&nbsp;&nbsp;
+        <input id="input-upload-doc" name="input-upload-doc" type="file" onchange="displayFileName()">&nbsp;&nbsp;
+        <button id="button-upload-doc" class="action-button" type="submit">Upload</button>&nbsp;&nbsp;
         <p id="upload-result-status" style="display: inline;"></p>
         <span id="upload-result-status-error" class="small-text" style="display: inline;"></span>
     </form>
@@ -18,8 +16,10 @@
     <!-- <p id="upload-doc-pages">Pages: </p> -->
 </div>
 <div id="div-summary-response" class="content-area">
-    <button onclick="displayPDFSummaryResponse()">Summarize</button>
-    <p id="p-summary-response"></p>
+    <div class="content-area">
+        <button id="button-summarize" class="action-button" onclick="displayPDFSummaryResponse()">Summarize</button>
+        <p id="p-summary-response"></p>
+    </div>
 </div>
 
 

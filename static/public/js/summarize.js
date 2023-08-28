@@ -20,7 +20,7 @@ window.onload = function () {
 
             if (response.ok) {
                 const result = await response.json();
-                // toggleDisplayByElementID("div-doc-pages-selection");
+                // toggleDisplayByElementID("div-summary-response");
                 console.log('File uploaded successfully:', result);
             } else {
                 console.error('File upload failed:', response.statusText);
@@ -94,7 +94,7 @@ function displayFileName() {
 
 function toggleDisplayByElementID(elementToToggle) {
     const element = document.getElementById(elementToToggle);
-    if (element.style.display === "none") {
+    if (element.style.display == "none") {
         element.style.display = "block"; // maybe just have a way to remove the attribute instead
     } else {
         element.style.display = "none";
