@@ -36,40 +36,24 @@ window.onload = function () {
 
 //
 async function displayPDFSummaryResponse() {
-    const summaryResponse = document.getElementById("div-summary-response");
-    fetch("/summarize_pdf?" + params, {
-        method: "GET"
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            console.log(error)
-        })
-
-    // update the elemeent witht the text
-}
-
-async function getPresignedUrlFromS3() {
+    console.log("instide displayPDFSummaryResponse()")
     const fileInput = document.getElementById('input-upload-doc');
-    let presignUrl = "";
+    const params = new URLSearchParams();
     if (fileInput.files.length > 0) {
-        const params = new URLSearchParams();
-        params.append("filename", fileInput.files[0].name);
-        fetch('/get_presigned_url?' + params)
+        params.append("filename", fileInput.files[0].name)
+        fetch("/summarize_pdf?" + params, {
+            method: "GET"
+        })
             .then(response => response.json())
             .then(data => {
                 console.log(data);
-                return "";
+                const summaryResonseElement = document.getElementById("p-summary-response");
+                summaryResonseElement.textContent = data;
             })
             .catch(error => {
-                // Handle any errors
-                console.error(error);
-            });
-
+                console.log(error)
+            })
     }
-    return presignUrl;
 }
 
 // Displays succes message on upload success
