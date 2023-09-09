@@ -21,7 +21,7 @@ a {
   color: #995bd7;
 } */
 a:hover {
-  background-color: rgba(81, 91, 112, 0.175);
+  background-color: rgba(81, 91, 112, 0.8);
 }
 
 div#heading {
