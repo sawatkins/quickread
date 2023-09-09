@@ -72,7 +72,7 @@ func UploadPDFDoc(sessionStore *session.Store, s3Client *s3.Client) fiber.Handle
 		// fmt.Println(session.Get("pdfDocuments"))
 
 		log.Println("File uploaded successfully!")
-		return c.Status(200).SendString("File uploaded successfully!")
+		return c.Status(200).JSON("File uploaded successfully!")
 	}
 
 }

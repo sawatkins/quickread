@@ -147,3 +147,12 @@ textarea {
 textarea::placeholder {
   color: #999;
 }
+
+#faq {
+  line-height: 1em;
+}
+
+#faq p {
+  padding-left: 15px;
+  padding-right: 15px;
+}
