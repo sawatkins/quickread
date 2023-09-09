@@ -82,7 +82,7 @@ func main() {
 	app.Get("/faq", auth, handlers.Faq)
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
-	app.Post("/upload", handlers.UploadPDFDoc(sessionStore, s3Client))
+	app.Post("/upload-doc", handlers.UploadDoc(s3Client, s3PresignClient))
 	app.Get("/summarize_pdf", handlers.SummarizePDF(s3PresignClient))
 
 	// Handle not founds

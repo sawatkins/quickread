@@ -1,40 +1,43 @@
 window.onload = function () {
     console.log("loaded summarize.js");
 
-    clearUploadResult();
-
     // Submits form to /upload endpoint
-    document.getElementById("form-upload-doc").addEventListener("submit", async function (e) {
-        e.preventDefault();
-        clearUploadResult();
+    // document.getElementById("form-upload-doc").addEventListener("submit", async function (e) {
+    // });
 
-        const form = e.target;
-        const url = form.action;
-        const formData = new FormData(form);
-
-        try {
-            const response = await fetch(url, {
-                method: form.method,
-                body: formData
-            });
-
-            if (response.ok) {
-                const result = await response.json();
-                // toggleDisplayByElementID("div-summary-response");
-                console.log('File uploaded successfully:', result);
-            } else {
-                console.error('File upload failed:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error uploading file:', error);
-        }
-
-        console.log("Form submitted");
-    });
+    const docUploadForm = document.getElementById("form-upload-doc");
+    docUploadForm.addEventListener("submit", handleDocSummary);
 
 }
 
-//
+async function handleDocUploadSummary(event) {
+    displaySummaryResultPage();
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    console.log("formdata:", formData)
+
+    //upload doc
+    uploadDoc(formData).then(data => {
+        console.log(data);
+    }).catch(error => {
+        console.error(error)
+    })
+
+
+}
+// success = presigned url
+// failure = signal ui to try again (maybe with errors; show upload page again...)
+async function uploadDoc(formData) {
+    const response = await fetch("/upload-doc", {
+        method: "post",
+        body: formData
+    });
+    // add check if response is ok and only return data is success
+    const data = await response.json();
+    return data;
+}
+
 async function displayPDFSummaryResponse() {
     console.log("instide displayPDFSummaryResponse()")
     const fileInput = document.getElementById('input-upload-doc');
@@ -54,6 +57,12 @@ async function displayPDFSummaryResponse() {
                 console.log(error)
             })
     }
+}
+
+function displaySummaryResultPage() {
+    hideElementByID("document");
+    hideElementByID("article");
+    showElementByID("summary-response");
 }
 
 // Displays succes message on upload success
@@ -90,13 +99,21 @@ function displayFileName() {
     }
 }
 
-
-
-function toggleDisplayByElementID(elementToToggle) {
+function toggleDisplayByID(elementToToggle) {
     const element = document.getElementById(elementToToggle);
     if (element.style.display == "none") {
         element.style.display = "block"; // maybe just have a way to remove the attribute instead
     } else {
         element.style.display = "none";
     }
+}
+
+function hideElementByID(element) {
+    const element = document.getElementById(element);
+    element.style.display = "none";
+}
+
+function showElementByID(element) {
+    const element = document.getElementById(element);
+    element.style.display = "block";
 }

@@ -3,7 +3,39 @@
 
 <!-- <h1>{{.Title}}</h1> -->
 
-<div id="div-upload-doc" class="content-area">
+<div class="content-area">
+    <h2>📚 Summarize</h2>
+</div>
+
+<div id="document" class="content-area">
+    <h3>📘 PDF Document</h3>
+    <p>Upload a PDF file <span class="small-text">(Max file size 15MB)</span></p>
+    <div id="div-upload-doc">
+        <form id='form-upload-doc' class="content-area" enctype="multipart/form-data">
+            <label id="label-upload-doc" for="input-upload-doc">Browse File</label>
+            <input id="input-upload-doc" name="input-upload-doc" type="file" onchange="displayFileName()">&nbsp;&nbsp;
+            <button id="button-upload-doc" class="action-button" type="submit">Summarize</button>&nbsp;&nbsp;
+            <span id="upload-doc-filename" class="small-text" style="display: inline;"></span>
+        </form>
+    </div>
+</div>
+
+
+<div id="article" class="content-area">
+    <h3>📕 Article</h3>
+</div>
+
+
+<div id="summary-response" class="content-area" style="display: block;">
+    <p id="back-to-summarize" class="small-text"><-- Back</p>
+    <p id="p-summary-response"></p>
+</div>
+
+
+
+
+<!-- <div id="div-upload-doc" class="content-area">
+    <h3>📘 PDF Documents</h3>
     <p>Step 1: PDF document. <span class="small-text">(Max file size 15MB)</span></p>
     <form id='form-upload-doc' class="content-area" action="/upload" method="post" enctype="multipart/form-data">
         <label id="label-upload-doc" for="input-upload-doc">Browse File</label>
@@ -13,14 +45,15 @@
         <span id="upload-result-status-error" class="small-text" style="display: inline;"></span>
     </form>
     <p id="upload-doc-filename" class="small-text"></p>
-    <!-- <p id="upload-doc-pages">Pages: </p> -->
 </div>
 <div id="div-summary-response" class="content-area">
     <div class="content-area">
         <button id="button-summarize" class="action-button" onclick="displayPDFSummaryResponse()">Summarize</button>
         <p id="p-summary-response"></p>
     </div>
-</div>
+</div> -->
+
+
 
 
 
