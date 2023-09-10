@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"log"
-	
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
@@ -12,11 +12,13 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
+
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	kagi "github.com/httpjamesm/kagigo"
+	"github.com/joho/godotenv"
 	"github.com/sawatkins/quickread/handlers"
 	"github.com/sawatkins/quickread/models"
-	"github.com/joho/godotenv"
 )
 
 var (
@@ -42,6 +44,12 @@ func main() {
 	}
 	s3Client := s3.NewFromConfig(cfg)
 	s3PresignClient := s3.NewPresignClient(s3Client)
+
+	// Load Kagi credentials
+	kagiClient := kagi.NewClient(&kagi.ClientConfig{
+		APIKey:     os.Getenv("KAGI_API_KEY"),
+		APIVersion: "v0",
+	})
 
 	// Create a new engine
 	engine := html.New("./views", ".html")
@@ -83,7 +91,7 @@ func main() {
 	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
 	app.Post("/upload-doc", handlers.UploadDoc(s3Client, s3PresignClient))
-	app.Get("/summarize_pdf", handlers.SummarizePDF(s3PresignClient))
+	app.Get("/summarize-doc", handlers.SummarizeDoc(s3PresignClient, kagiClient))
 
 	// Handle not founds
 	app.Use(handlers.NotFound)

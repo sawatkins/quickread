@@ -6,24 +6,22 @@ window.onload = function () {
     // });
 
     const docUploadForm = document.getElementById("form-upload-doc");
-    docUploadForm.addEventListener("submit", handleDocSummary);
+    docUploadForm.addEventListener("submit", handleDocUploadSummary);
 
 }
 
-async function handleDocUploadSummary(event) {
+function handleDocUploadSummary(event) {
     displaySummaryResultPage();
     event.preventDefault();
     const formData = new FormData(event.target);
 
-    console.log("formdata:", formData)
-
-    //upload doc
     uploadDoc(formData).then(data => {
         console.log(data);
+        // this.presignedUrl = data.presignedUrl;
+        summarizeDoc(data.presignedUrl)
     }).catch(error => {
         console.error(error)
     })
-
 
 }
 // success = presigned url
@@ -38,31 +36,50 @@ async function uploadDoc(formData) {
     return data;
 }
 
-async function displayPDFSummaryResponse() {
-    console.log("instide displayPDFSummaryResponse()")
-    const fileInput = document.getElementById('input-upload-doc');
-    const params = new URLSearchParams();
-    if (fileInput.files.length > 0) {
-        params.append("filename", fileInput.files[0].name)
-        fetch("/summarize_pdf?" + params, {
-            method: "GET"
+async function summarizeDoc(presignedUrl) {
+    // const fileInput = document.getElementById('input-upload-doc');
+    // const params = new URLSearchParams();
+    // if (fileInput.files.length > 0) {
+    //     params.append("filename", fileInput.files[0].name)
+    //     fetch("/summarize-doc?" + params, {
+    //         method: "GET"
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log(data);
+    //             const summaryResonseElement = document.getElementById("p-summary-response");
+    //             summaryResonseElement.textContent = data;
+    //         })
+    //         .catch(error => {
+    //             console.log(error)
+    //         })
+    // }
+    console.log("inside sumamrize doc")
+    const summaryResonseElement = document.getElementById("summary-response");
+    let params = new URLSearchParams();
+    params.append("presignedUrl", presignedUrl)
+    console.log("/summarize-doc?" + params)
+    fetch("/summarize-doc?" + params)
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            summaryResonseElement.textContent = data;
         })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                const summaryResonseElement = document.getElementById("p-summary-response");
-                summaryResonseElement.textContent = data;
-            })
-            .catch(error => {
-                console.log(error)
-            })
-    }
+        .catch(error => {
+            console.log(error)
+        })
 }
 
 function displaySummaryResultPage() {
     hideElementByID("document");
     hideElementByID("article");
     showElementByID("summary-response");
+}
+
+function hideSummaryResultPage() {
+    showElementByID("document");
+    showElementByID("article");
+    hideElementByID("summary-response");
 }
 
 // Displays succes message on upload success
@@ -109,11 +126,11 @@ function toggleDisplayByID(elementToToggle) {
 }
 
 function hideElementByID(element) {
-    const element = document.getElementById(element);
-    element.style.display = "none";
+    const elementToHide = document.getElementById(element);
+    elementToHide.style.display = "none";
 }
 
 function showElementByID(element) {
-    const element = document.getElementById(element);
-    element.style.display = "block";
+    const elementToShow = document.getElementById(element);
+    elementToShow.style.display = "block";
 }

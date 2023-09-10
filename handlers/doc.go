@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -22,16 +21,18 @@ const PDF_UPLOAD_ACCESS_POINT string = "coretext-pdfs-genera-meymo4pyxf87dr89ry5
 func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// upload size and filetype validation
+		fmt.Println("1")
 		file, err := c.FormFile("input-upload-doc")
 		if err != nil {
 			c.Status(500).JSON("Filaure to select document from form")
 		}
+		fmt.Println("2")
 		src, err := file.Open()
 		if err != nil {
 			c.Status(500).JSON("File to open file")
 		}
 		defer src.Close()
-
+		fmt.Println("3")
 		key := shortuuid.New()
 		_, err = s3Client.PutObject(context.TODO(), &s3.PutObjectInput{
 			Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
@@ -43,11 +44,13 @@ func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Han
 			return c.Status(500).JSON("File upload to S3 failed")
 		}
 
+		fmt.Println("4")
+
 		presignedUrl := getPresignedUrl(key, s3PresignClient)
 		if presignedUrl == "" {
 			return c.SendStatus(500)
 		}
-
+		fmt.Println("5")
 		log.Println("File uploaded successfully!")
 		return c.Status(200).JSON(fiber.Map{
 			"presignedUrl": presignedUrl,
@@ -57,19 +60,10 @@ func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Han
 
 }
 
-func SummarizePDF(s3PresignClient *s3.PresignClient) fiber.Handler {
+func SummarizeDoc(s3PresignClient *s3.PresignClient, kagiClient *kagi.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// data validation & error handling todo here
-		filename := c.Query("filename")
-		presignedUrl := getPresignedUrl(filename, s3PresignClient)
-		fmt.Println("filename: " + filename)
-		fmt.Println("presign url: " + presignedUrl)
-
-		// todo move this somewhere else (to app.go and pass in)
-		kagiClient := kagi.NewClient(&kagi.ClientConfig{
-			APIKey:     os.Getenv("KAGI_API_KEY"),
-			APIVersion: "v0",
-		})
+		presignedUrl := c.Query("presignedUrl")
 
 		response, err := kagiClient.UniversalSummarizerCompletion(kagi.UniversalSummarizerParams{
 			URL:         presignedUrl,
