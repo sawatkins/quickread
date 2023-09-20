@@ -17,15 +17,14 @@ function handleDocUploadSummary(event) {
 
     uploadDoc(formData).then(data => {
         console.log(data);
-        // this.presignedUrl = data.presignedUrl;
+        // TODO if presigned url is undefuned, do something else
         summarizeDoc(data.presignedUrl)
     }).catch(error => {
         console.error(error)
     })
 
 }
-// success = presigned url
-// failure = signal ui to try again (maybe with errors; show upload page again...)
+
 async function uploadDoc(formData) {
     const response = await fetch("/upload-doc", {
         method: "post",
@@ -37,23 +36,6 @@ async function uploadDoc(formData) {
 }
 
 async function summarizeDoc(presignedUrl) {
-    // const fileInput = document.getElementById('input-upload-doc');
-    // const params = new URLSearchParams();
-    // if (fileInput.files.length > 0) {
-    //     params.append("filename", fileInput.files[0].name)
-    //     fetch("/summarize-doc?" + params, {
-    //         method: "GET"
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data);
-    //             const summaryResonseElement = document.getElementById("p-summary-response");
-    //             summaryResonseElement.textContent = data;
-    //         })
-    //         .catch(error => {
-    //             console.log(error)
-    //         })
-    // }
     console.log("inside sumamrize doc")
     const summaryResonseElement = document.getElementById("summary-response");
     let params = new URLSearchParams();
@@ -62,8 +44,7 @@ async function summarizeDoc(presignedUrl) {
     fetch("/summarize-doc?" + params)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            summaryResonseElement.textContent = data;
+            summaryResonseElement.innerHTML = data;
         })
         .catch(error => {
             console.log(error)
