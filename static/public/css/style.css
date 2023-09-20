@@ -170,7 +170,7 @@ textarea::placeholder {
   width: 20px;
   height: 20px;
   -webkit-animation: spin 0.43s cubic-bezier(.7,.05,.4,.88) infinite;
-  animation: spin 2s linear infinite;
+  animation: spin 0.43s cubic-bezier(.7,.05,.4,.88) infinite;
 }
 
 @-webkit-keyframes spin {

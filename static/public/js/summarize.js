@@ -11,14 +11,16 @@ window.onload = function () {
 }
 
 function handleDocUploadSummary(event) {
-    displaySummaryResultPage();
+    // TODO error checking
+    displaySummaryLoadingPage();
     event.preventDefault();
     const formData = new FormData(event.target);
-    // console.log(formData)
+    console.log(formData)
     uploadDoc(formData).then(data => {
         console.log(data);
         // TODO if presigned url is undefuned, do something else
         summarizeDoc(data.presignedUrl)
+        displaySummaryResultPage();
     }).catch(error => {
         console.error(error)
     })
@@ -37,7 +39,7 @@ async function uploadDoc(formData) {
 
 async function summarizeDoc(presignedUrl) {
     console.log("inside sumamrize doc")
-    const summaryResonseElement = document.getElementById("summary-response");
+    const summaryResonseElement = document.getElementById("summary-response-text");
     let params = new URLSearchParams();
     params.append("presignedUrl", presignedUrl)
     console.log("/summarize-doc?" + params)
@@ -45,6 +47,7 @@ async function summarizeDoc(presignedUrl) {
         .then(response => response.json())
         .then(data => {
             summaryResonseElement.innerText = data;
+            
         })
         .catch(error => {
             console.log(error)
@@ -52,23 +55,33 @@ async function summarizeDoc(presignedUrl) {
 }
 
 function displaySummaryLoadingPage() {
-    
+    hideAllSummaryBlocks();
+    const fileInput = document.getElementById('input-upload-doc');
+    const fileName = document.getElementById('file-summary-name-loading');
+    fileName.innerText = fileInput.files[0].name;
+    showElementByID("summary-loading");
 }
 
 function displaySummaryResultPage() {
-    // const fileInput = document.getElementById('input-upload-doc');
-    // const fileName = document.getElementById('file-summary-name');
-
-    hideElementByID("document");
-    hideElementByID("article");
-    // fileName.innerText = fileInput.files[0].name;
+    hideAllSummaryBlocks();
+    const fileInput = document.getElementById('input-upload-doc');
+    const fileName = document.getElementById('file-summary-name-response');
+    fileName.innerText = fileInput.files[0].name;
     showElementByID("summary-response");
 }
 
-function hideSummaryResultPage() {
+function goToSummaryUploadPage() {
+    hideAllSummaryBlocks();
     showElementByID("document");
     showElementByID("article");
-    hideElementByID("summary-response");
+}
+
+function hideAllSummaryBlocks() {
+    summaryBlocks = document.getElementsByClassName("summary-block");
+    for (let i = 0; i < summaryBlocks.length; i++) {
+        let block = summaryBlocks[i];
+        block.style.display = 'none';
+    }
 }
 
 // Displays succes message on upload success
@@ -116,10 +129,14 @@ function toggleDisplayByID(elementToToggle) {
 
 function hideElementByID(element) {
     const elementToHide = document.getElementById(element);
-    elementToHide.style.display = "none";
+    if (elementToHide) {
+        elementToHide.style.display = "none";
+    }
 }
 
 function showElementByID(element) {
     const elementToShow = document.getElementById(element);
-    elementToShow.style.display = "block";
+    if (elementToShow) {
+        elementToShow.style.display = "block";
+    }
 }

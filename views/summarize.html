@@ -7,7 +7,7 @@
     <h2>📚 Summarize</h2>
 </div>
 
-<div id="document" class="content-area">
+<div id="document" class="content-area summary-block">
     <h3>📘 PDF Document</h3>
     <p>Upload a PDF file <span class="small-text">(Max file size 15MB)</span></p>
     <div id="div-upload-doc">
@@ -21,19 +21,19 @@
 </div>
 
 
-<div id="article" class="content-area">
+<div id="article" class="content-area summary-block">
     <h3>📕 Article</h3>
 </div>
 
-<div id="summary-loading" class="content-area" style="display: none;">
+<div id="summary-loading" class="content-area summary-block" style="display: none;">
+    <p><strong>Summarizing file: </strong><span id="file-summary-name-loading"></span></p>
     <div id="summary-spinner" class="spin"></div>
-    <p style="display: inline;">Summarizing file: <span id="file-summary-name"></span></p>
 </div>
 
-<div id="summary-response" class="content-area" style="display: none;">
-    <p class="small-text" onclick="hideSummaryResultPage()">← <span id="back-to-summarize">Back</span></p>
-
-    <p id="summary-response"></p>
+<div id="summary-response" class="content-area summary-block" style="display: none;">
+    <p class="small-text" onclick="goToSummaryUploadPage()">← <span id="back-to-summarize">Back</span></p>
+    <p style="display: inline;"><strong>Summary for: </strong><span id="file-summary-name-response"></span></p>
+    <p id="summary-response-text"></p>
 </div>
 
 

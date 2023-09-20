@@ -21,18 +21,15 @@ const PDF_UPLOAD_ACCESS_POINT string = "coretext-pdfs-genera-meymo4pyxf87dr89ry5
 func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		// upload size and filetype validation
-		fmt.Println("1")
 		file, err := c.FormFile("input-upload-doc")
 		if err != nil {
 			c.Status(500).JSON("Filaure to select document from form")
 		}
-		fmt.Println("2")
 		src, err := file.Open()
 		if err != nil {
 			c.Status(500).JSON("File to open file")
 		}
 		defer src.Close()
-		fmt.Println("3")
 		key := shortuuid.New() + ".pdf"
 		_, err = s3Client.PutObject(context.TODO(), &s3.PutObjectInput{
 			Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
@@ -44,13 +41,10 @@ func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Han
 			return c.Status(500).JSON("File upload to S3 failed")
 		}
 
-		fmt.Println("4")
-
 		presignedUrl := getPresignedUrl(key, s3PresignClient)
 		if presignedUrl == "" {
 			return c.SendStatus(500)
 		}
-		fmt.Println("5")
 		log.Println("File uploaded successfully!")
 		return c.Status(200).JSON(fiber.Map{
 			"presignedUrl": presignedUrl,
@@ -75,7 +69,7 @@ func SummarizeDoc(s3PresignClient *s3.PresignClient, kagiClient *kagi.Client) fi
 			return c.Status(fiber.StatusInternalServerError).JSON("Summarize PDF failed")
 		}
 		// todo log the meta data response
-		fmt.Println(response.Data.Output)
+		// fmt.Println(response.Data.Output)
 		return c.Status(200).JSON(response.Data.Output)
 	}
 }
@@ -91,6 +85,10 @@ func getPresignedUrl(key string, s3PresignClient *s3.PresignClient) string {
 		log.Printf("Filed to generate pre-signed url: %v\n", err)
 		return ""
 	}
+	// for testing...
+	//testurl := "https://coretext-pdfs-genera-meymo4pyxf87dr89ry53a3hzzercgusw1b-s3alias.s3.us-west-1.amazonaws.com/jE92nGcDGtTPMmpe2Qb64c.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIA4HM6FL2ZIUNVZEV3%2F20230920%2Fus-west-1%2Fs3%2Faws4_request&X-Amz-Date=20230920T061735Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&x-id=GetObject&X-Amz-Signature=9c723f3fd240417f9239af83c0a026af0786448771f0b111851d282cc9059018"
+	//fmt.Println(presignedUrl.Method)
+	//return testurl
 	return presignedUrl.URL
 }
 
