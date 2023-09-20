@@ -14,7 +14,7 @@ function handleDocUploadSummary(event) {
     displaySummaryResultPage();
     event.preventDefault();
     const formData = new FormData(event.target);
-
+    // console.log(formData)
     uploadDoc(formData).then(data => {
         console.log(data);
         // TODO if presigned url is undefuned, do something else
@@ -44,16 +44,24 @@ async function summarizeDoc(presignedUrl) {
     fetch("/summarize-doc?" + params)
         .then(response => response.json())
         .then(data => {
-            summaryResonseElement.innerHTML = data;
+            summaryResonseElement.innerText = data;
         })
         .catch(error => {
             console.log(error)
         })
 }
 
+function displaySummaryLoadingPage() {
+    
+}
+
 function displaySummaryResultPage() {
+    // const fileInput = document.getElementById('input-upload-doc');
+    // const fileName = document.getElementById('file-summary-name');
+
     hideElementByID("document");
     hideElementByID("article");
+    // fileName.innerText = fileInput.files[0].name;
     showElementByID("summary-response");
 }
 

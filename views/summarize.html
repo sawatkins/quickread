@@ -11,7 +11,7 @@
     <h3>📘 PDF Document</h3>
     <p>Upload a PDF file <span class="small-text">(Max file size 15MB)</span></p>
     <div id="div-upload-doc">
-        <form id='form-upload-doc' class="content-area" enctype="multipart/form-data">
+        <form id='form-upload-doc' class="content-area" method="post" enctype="multipart/form-data">
             <label id="label-upload-doc" for="input-upload-doc">Browse File</label>
             <input id="input-upload-doc" name="input-upload-doc" type="file" onchange="displayFileName()">&nbsp;&nbsp;
             <button id="button-upload-doc" class="action-button" type="submit">Summarize</button>&nbsp;&nbsp;
@@ -21,18 +21,23 @@
 </div>
 
 
-<!-- <div id="article" class="content-area">
+<div id="article" class="content-area">
     <h3>📕 Article</h3>
-</div> -->
+</div>
 
+<div id="summary-loading" class="content-area" style="display: none;">
+    <div id="summary-spinner" class="spin"></div>
+    <p style="display: inline;">Summarizing file: <span id="file-summary-name"></span></p>
+</div>
 
-<div id="summary-response" class="content-area" style="display: block;">
+<div id="summary-response" class="content-area" style="display: none;">
     <p class="small-text" onclick="hideSummaryResultPage()">← <span id="back-to-summarize">Back</span></p>
+
     <p id="summary-response"></p>
 </div>
 
 
-
+<br>
 
 <!-- <div id="div-upload-doc" class="content-area">
     <h3>📘 PDF Documents</h3>
