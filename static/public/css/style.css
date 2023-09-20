@@ -157,6 +157,11 @@ textarea::placeholder {
   padding-right: 15px;
 }
 
+#back-to-summarize:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 
 .spin {
   border: 3px solid #556177;
