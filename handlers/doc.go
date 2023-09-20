@@ -33,7 +33,7 @@ func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Han
 		}
 		defer src.Close()
 		fmt.Println("3")
-		key := shortuuid.New()
+		key := shortuuid.New() + ".pdf"
 		_, err = s3Client.PutObject(context.TODO(), &s3.PutObjectInput{
 			Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
 			Key:    aws.String(key),
@@ -85,7 +85,7 @@ func getPresignedUrl(key string, s3PresignClient *s3.PresignClient) string {
 		Bucket: aws.String(PDF_UPLOAD_ACCESS_POINT),
 		Key:    aws.String(key),
 	}, func(po *s3.PresignOptions) {
-		po.Expires = 2 * time.Hour
+		po.Expires = 24 * time.Hour
 	})
 	if err != nil {
 		log.Printf("Filed to generate pre-signed url: %v\n", err)
