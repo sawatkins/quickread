@@ -24,6 +24,7 @@ import (
 var (
 	port    = flag.String("port", ":8080", "Port to listen on")
 	prefork = flag.Bool("prefork", false, "Enable prefork in Production")
+	dev     = flag.Bool("dev", true, "Enable development mode")
 )
 
 func main() {
@@ -31,7 +32,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-	   log.Printf("Error loading .env file")
+		log.Printf("Error loading .env file")
 	}
 
 	// Connected with database
@@ -53,8 +54,10 @@ func main() {
 
 	// Create a new engine
 	engine := html.New("./views", ".html")
-	engine.Reload(true) // disable in prod
-	engine.Debug(true) // disable in prod
+	if *dev {
+		engine.Reload(true) 
+		engine.Debug(true)  
+	}
 
 	// Create fiber app
 	app := fiber.New(fiber.Config{

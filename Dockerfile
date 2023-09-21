@@ -10,5 +10,5 @@ RUN go build -o quickread .
 
 EXPOSE 8080
 
-CMD ["/app/quickread", "-prefork=false", "-port=:8080"]
+CMD ["/app/quickread", "-prefork=false", "-dev=false", "-port=:8080"]
 
