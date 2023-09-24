@@ -3,15 +3,14 @@
 <!-- <h1>{{.Title}}</h1> -->
 
 <div class="content-area">
-    <h2>📚 Summarize</h2>
+    <h2>📚 Summarize a PDF</h2>
 </div>
 
 <div id="document" class="content-area summary-block">
-    <h3>📘 PDF Document</h3>
-    <p>Upload a PDF file <span class="small-text">(Max file size 15MB)</span></p>
+    <p>Select a PDF file <span class="small-text">(Max file size 15MB)</span>, then click Summarize! </p>
     <div id="div-upload-doc">
         <form id='form-upload-doc' class="content-area" method="post" enctype="multipart/form-data">
-            <label id="label-upload-doc" for="input-upload-doc">Browse File</label>
+            <label id="label-upload-doc" for="input-upload-doc">Browse Files</label>
             <input id="input-upload-doc" name="input-upload-doc" type="file" onchange="displayFileName()">&nbsp;&nbsp;
             <button id="button-upload-doc" class="action-button" type="submit">Summarize</button>&nbsp;&nbsp;
             <span id="upload-doc-filename" class="small-text" style="display: inline;"></span>
@@ -20,9 +19,9 @@
 </div>
 
 
-<div id="article" class="content-area summary-block">
+<!-- <div id="article" class="content-area summary-block">
     <h3>📕 Article</h3>
-</div>
+</div> -->
 
 <div id="summary-loading" class="content-area summary-block" style="display: none;">
     <p><strong>Summarizing file: </strong><span id="file-summary-name-loading"></span></p>

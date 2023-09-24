@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/fiber/v2/middleware/session"
+	// "github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
 
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -18,7 +18,7 @@ import (
 	kagi "github.com/httpjamesm/kagigo"
 	"github.com/joho/godotenv"
 	"github.com/sawatkins/quickread/handlers"
-	"github.com/sawatkins/quickread/models"
+	// "github.com/sawatkins/quickread/models"
 )
 
 var (
@@ -66,8 +66,8 @@ func main() {
 	})
 
 	// Create sessions
-	sessionStore := session.New()
-	sessionStore.RegisterType([]models.PDFDocument{})
+	// sessionStore := session.New()
+	// sessionStore.RegisterType([]models.PDFDocument{})
 	// app.Use(sessionStore) // what does this do? is is necessary?
 
 	// Middleware
@@ -86,12 +86,10 @@ func main() {
 	// userApis.Post("/createUser", handlers.CreateUser)
 
 	// Routes
-	app.Get("/", auth, handlers.Index(sessionStore))
-	app.Get("/doc", auth, handlers.Doc(sessionStore))
+	app.Get("/", auth, handlers.Index)
 	app.Get("/summarize", auth, handlers.Summarize)
 	app.Get("/listen", auth, handlers.Listen)
 	app.Get("/faq", auth, handlers.Faq)
-	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
 	app.Post("/upload-doc", handlers.UploadDoc(s3Client, s3PresignClient))
 	app.Get("/summarize-doc", handlers.SummarizeDoc(s3PresignClient, kagiClient))
