@@ -73,7 +73,7 @@ function displaySummaryResultPage() {
 function goToSummaryUploadPage() {
     hideAllSummaryBlocks();
     showElementByID("document");
-    showElementByID("article");
+    // showElementByID("article");
 }
 
 function hideAllSummaryBlocks() {

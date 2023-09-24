@@ -10,7 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/basicauth"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/fiber/v2/middleware/session"
+	// "github.com/gofiber/fiber/v2/middleware/session"
 	"github.com/gofiber/template/html/v2"
 
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -18,12 +18,13 @@ import (
 	kagi "github.com/httpjamesm/kagigo"
 	"github.com/joho/godotenv"
 	"github.com/sawatkins/quickread/handlers"
-	"github.com/sawatkins/quickread/models"
+	// "github.com/sawatkins/quickread/models"
 )
 
 var (
 	port    = flag.String("port", ":8080", "Port to listen on")
 	prefork = flag.Bool("prefork", false, "Enable prefork in Production")
+	dev     = flag.Bool("dev", true, "Enable development mode")
 )
 
 func main() {
@@ -31,7 +32,7 @@ func main() {
 
 	err := godotenv.Load()
 	if err != nil {
-	   log.Printf("Error loading .env file")
+		log.Printf("Error loading .env file")
 	}
 
 	// Connected with database
@@ -53,8 +54,10 @@ func main() {
 
 	// Create a new engine
 	engine := html.New("./views", ".html")
-	engine.Reload(true) // disable in prod
-	engine.Debug(true) // disable in prod
+	if *dev {
+		engine.Reload(true) 
+		engine.Debug(true)  
+	}
 
 	// Create fiber app
 	app := fiber.New(fiber.Config{
@@ -63,8 +66,8 @@ func main() {
 	})
 
 	// Create sessions
-	sessionStore := session.New()
-	sessionStore.RegisterType([]models.PDFDocument{})
+	// sessionStore := session.New()
+	// sessionStore.RegisterType([]models.PDFDocument{})
 	// app.Use(sessionStore) // what does this do? is is necessary?
 
 	// Middleware
@@ -83,12 +86,10 @@ func main() {
 	// userApis.Post("/createUser", handlers.CreateUser)
 
 	// Routes
-	app.Get("/", auth, handlers.Index(sessionStore))
-	app.Get("/doc", auth, handlers.Doc(sessionStore))
+	app.Get("/", auth, handlers.Index)
 	app.Get("/summarize", auth, handlers.Summarize)
 	app.Get("/listen", auth, handlers.Listen)
 	app.Get("/faq", auth, handlers.Faq)
-	app.Get("/import", auth, handlers.Import)
 	// Non-user routes
 	app.Post("/upload-doc", handlers.UploadDoc(s3Client, s3PresignClient))
 	app.Get("/summarize-doc", handlers.SummarizeDoc(s3PresignClient, kagiClient))
