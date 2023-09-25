@@ -16,6 +16,8 @@ window.onload = function () {
     // (stats)
     // file type, file amount, and file size checking and proper error codes
     // (example gif on homepage)
+    // add icon licesnes
+    // make linke hight for h2s better. -- DONE
 
 }
 
