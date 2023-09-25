@@ -16,8 +16,11 @@ window.onload = function () {
     // (stats)
     // file type, file amount, and file size checking and proper error codes
     // (example gif on homepage)
-    // add icon licesnes
+    // add icon licesnes -- DONE
     // make linke hight for h2s better. -- DONE
+    // add example gif
+    // add some limit to prevent abuse
+    // remove auth
 
 }
 
@@ -62,14 +65,6 @@ async function summarizeDoc(presignedUrl) {
         })
 }
 
-// function displaySummaryLoadingPage() {
-//     hideAllSummaryBlocks();
-//     const fileInput = document.getElementById('input-upload-doc');
-//     const fileName = document.getElementById('file-summary-name-loading');
-//     fileName.innerText = fileInput.files[0].name;
-//     showElementByID("summary-loading");
-// }
-
 function displaySummaryResultPage() {
     hideAllSummaryBlocks();
     const fileInput = document.getElementById('input-upload-doc');
@@ -93,6 +88,7 @@ function goToSummaryUploadPage() {
     hideAllSummaryBlocks();
     document.getElementById('input-upload-doc').value = '';
     document.getElementById('upload-doc-filename').textContent = '';
+    document.getElementById('summary-response').innerText = '';
     showElementByID("document");
 }
 
