@@ -169,6 +169,7 @@ textarea::placeholder {
   border-top: 3px solid #DEDEDE;
   width: 20px;
   height: 20px;
+  margin-top: 1rem;
   -webkit-animation: spin 0.43s cubic-bezier(.7,.05,.4,.88) infinite;
   animation: spin 0.43s cubic-bezier(.7,.05,.4,.88) infinite;
 }
