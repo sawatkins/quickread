@@ -8,11 +8,25 @@ window.onload = function () {
     const docUploadForm = document.getElementById("form-upload-doc");
     docUploadForm.addEventListener("submit", handleDocUploadSummary);
 
+
+    // TODO sep 24
+    // (clear filename on back button) -- DONE
+    // remove loading page, move spinner to response page -- DONE
+    // make sure the above works -- DONE
+    // stats w/kv store
+    // file type, file amount, and file size checking and proper error codes
+    // (example gif on homepage)
+    // add icon licesnes -- DONE
+    // make linke hight for h2s better. -- DONE
+    // add example gif -- DONE
+    // add some limit to prevent abuse
+    // remove auth
+
 }
 
 function handleDocUploadSummary(event) {
     // TODO error checking
-    displaySummaryLoadingPage();
+    displaySummaryResultPage();
     event.preventDefault();
     const formData = new FormData(event.target);
     console.log(formData)
@@ -20,11 +34,9 @@ function handleDocUploadSummary(event) {
         console.log(data);
         // TODO if presigned url is undefuned, do something else
         summarizeDoc(data.presignedUrl)
-        displaySummaryResultPage();
     }).catch(error => {
         console.error(error)
     })
-
 }
 
 async function uploadDoc(formData) {
@@ -38,7 +50,6 @@ async function uploadDoc(formData) {
 }
 
 async function summarizeDoc(presignedUrl) {
-    console.log("inside sumamrize doc")
     const summaryResonseElement = document.getElementById("summary-response-text");
     let params = new URLSearchParams();
     params.append("presignedUrl", presignedUrl)
@@ -46,20 +57,12 @@ async function summarizeDoc(presignedUrl) {
     fetch("/summarize-doc?" + params)
         .then(response => response.json())
         .then(data => {
+            hideSpinner();
             summaryResonseElement.innerText = data;
-            
         })
         .catch(error => {
             console.log(error)
         })
-}
-
-function displaySummaryLoadingPage() {
-    hideAllSummaryBlocks();
-    const fileInput = document.getElementById('input-upload-doc');
-    const fileName = document.getElementById('file-summary-name-loading');
-    fileName.innerText = fileInput.files[0].name;
-    showElementByID("summary-loading");
 }
 
 function displaySummaryResultPage() {
@@ -68,12 +71,25 @@ function displaySummaryResultPage() {
     const fileName = document.getElementById('file-summary-name-response');
     fileName.innerText = fileInput.files[0].name;
     showElementByID("summary-response");
+    displaySpinner();
+}
+
+function displaySpinner() {
+    const spinner = document.getElementById('summary-spinner');
+    spinner.style.display = 'block';
+}
+
+function hideSpinner() {
+    const spinner = document.getElementById('summary-spinner');
+    spinner.style.display = 'none';
 }
 
 function goToSummaryUploadPage() {
     hideAllSummaryBlocks();
+    document.getElementById('input-upload-doc').value = '';
+    document.getElementById('upload-doc-filename').textContent = '';
+    document.getElementById('summary-response').innerText = '';
     showElementByID("document");
-    // showElementByID("article");
 }
 
 function hideAllSummaryBlocks() {
@@ -83,6 +99,7 @@ function hideAllSummaryBlocks() {
         block.style.display = 'none';
     }
 }
+
 
 // Displays succes message on upload success
 function displayUploadSuccess() {

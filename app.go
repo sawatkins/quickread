@@ -18,7 +18,6 @@ import (
 	kagi "github.com/httpjamesm/kagigo"
 	"github.com/joho/godotenv"
 	"github.com/sawatkins/quickread/handlers"
-	// "github.com/sawatkins/quickread/models"
 )
 
 var (
@@ -78,7 +77,12 @@ func main() {
 	app.Static("/", "./static/public")
 
 	// Auth
-	auth := setAuth()
+	// auth := setAuth()
+	
+	// summaryTime := &models.SummaryTime{
+	// 	Unused: true,
+	// 	NextTime: time.Now(),
+	// }
 
 	// Create a /api/v1 endpoint
 	// v1 := app.Group("/api/v1")
@@ -86,10 +90,10 @@ func main() {
 	// userApis.Post("/createUser", handlers.CreateUser)
 
 	// Routes
-	app.Get("/", auth, handlers.Index)
-	app.Get("/summarize", auth, handlers.Summarize)
-	app.Get("/listen", auth, handlers.Listen)
-	app.Get("/faq", auth, handlers.Faq)
+	app.Get("/", handlers.Index)
+	app.Get("/summarize", handlers.Summarize())
+	app.Get("/listen", handlers.Listen)
+	app.Get("/faq", handlers.Faq)
 	// Non-user routes
 	app.Post("/upload-doc", handlers.UploadDoc(s3Client, s3PresignClient))
 	app.Get("/summarize-doc", handlers.SummarizeDoc(s3PresignClient, kagiClient))
