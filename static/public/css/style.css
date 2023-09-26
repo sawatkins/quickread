@@ -193,15 +193,18 @@ textarea::placeholder {
   display: block;
   margin: 0 auto; */
   display: block;
-  margin: 10px;
-  width: 800px;
+  margin: auto;
+  /* width: 800px; */
+  width: 100%;
+  max-width: 800px;
 }
 
 .demo-gif-class {
   position: relative;
   display: inline-block;
   background-color: #25262b;
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 2%;
   /* margin-left: 40px;
   margin-right: 40px; */
   /* line-height: 1rem; */
@@ -220,4 +223,10 @@ textarea::placeholder {
   left: -5px;
   background-color: #44a9b7;
   z-index: -1;
+}
+
+#stats h3, #stats ul {
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+  
 }
