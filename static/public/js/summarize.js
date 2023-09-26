@@ -13,12 +13,12 @@ window.onload = function () {
     // (clear filename on back button) -- DONE
     // remove loading page, move spinner to response page -- DONE
     // make sure the above works -- DONE
-    // (stats)
+    // stats w/kv store
     // file type, file amount, and file size checking and proper error codes
     // (example gif on homepage)
     // add icon licesnes -- DONE
     // make linke hight for h2s better. -- DONE
-    // add example gif
+    // add example gif -- DONE
     // add some limit to prevent abuse
     // remove auth
 
