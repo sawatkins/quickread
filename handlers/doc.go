@@ -17,8 +17,7 @@ import (
 
 )
 
-const PDF_UPLOAD_BUCKET_NAME string = "coretext-pdfs-general"
-const PDF_UPLOAD_ACCESS_POINT string = "coretext-pdfs-genera-meymo4pyxf87dr89ry53a3hzzercgusw1b-s3alias"
+const PDF_UPLOAD_ACCESS_POINT string = "quickread-pdf-upload-qa4gp8jcnk5orz4qtrnpmorqd9ogrusw1a-s3alias"
 
 func UploadDoc(s3Client *s3.Client, s3PresignClient *s3.PresignClient) fiber.Handler {
 	return func(c *fiber.Ctx) error {
