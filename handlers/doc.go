@@ -7,14 +7,10 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
-	// "github.com/gofiber/fiber/v2/middleware/session"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	kagi "github.com/httpjamesm/kagigo"
 	"github.com/lithammer/shortuuid/v3"
-
-
 )
 
 const PDF_UPLOAD_ACCESS_POINT string = "quickread-pdf-upload-qa4gp8jcnk5orz4qtrnpmorqd9ogrusw1a-s3alias"
@@ -92,29 +88,3 @@ func getPresignedUrl(key string, s3PresignClient *s3.PresignClient) string {
 	//return testurl
 	return presignedUrl.URL
 }
-
-// // store info in session
-// session, err := sessionStore.Get(c)
-// if err != nil {
-// 	return err
-// }
-// // crete empty []models.PDFDocument{} is doens't exist
-// if session.Get("pdfDocuments") == nil {
-// 	session.Set("pdfDocuments", []models.PDFDocument{})
-// }
-// // create pdfdocument with data from this request
-// pdfdoc := models.PDFDocument{
-// 	Id:        uuid.NewString(),
-// 	Filename:  file.Filename,
-// 	Url:       presignedUrl.URL,
-// 	CreatedOn: time.Now().Format("2006-01-02 15:04:05"),
-// }
-// // add it to array of pdfdocuments
-// pdfDocuments := session.Get("pdfDocuments").([]models.PDFDocument)
-// pdfDocuments = append(pdfDocuments, pdfdoc)
-// session.Set("pdfDocuments", pdfDocuments)
-
-// session.Save()
-
-// fmt.Println(session)
-// fmt.Println(session.Get("pdfDocuments"))

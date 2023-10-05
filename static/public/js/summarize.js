@@ -1,27 +1,12 @@
 window.onload = function () {
-    console.log("loaded summarize.js");
-
-    // Submits form to /upload endpoint
-    // document.getElementById("form-upload-doc").addEventListener("submit", async function (e) {
-    // });
-
-    const docUploadForm = document.getElementById("form-upload-doc");
-    docUploadForm.addEventListener("submit", handleDocUploadSummary);
-
-
-    // TODO sep 24
-    // (clear filename on back button) -- DONE
-    // remove loading page, move spinner to response page -- DONE
-    // make sure the above works -- DONE
-    // stats w/kv store
-    // file type, file amount, and file size checking and proper error codes
-    // (example gif on homepage)
-    // add icon licesnes -- DONE
-    // make linke hight for h2s better. -- DONE
-    // add example gif -- DONE
-    // add some limit to prevent abuse
-    // remove auth
-
+    document.getElementById("form-upload-doc").addEventListener("submit", handleDocUploadSummary);
+    document.getElementById("input-upload-doc").addEventListener('change', function() {
+        if (this.value) {
+          document.getElementById('button-upload-doc').disabled = false;
+        } else {
+          document.getElementById('button-upload-doc').disabled = true;
+        }
+      });
 }
 
 function handleDocUploadSummary(event) {
@@ -141,19 +126,5 @@ function toggleDisplayByID(elementToToggle) {
         element.style.display = "block"; // maybe just have a way to remove the attribute instead
     } else {
         element.style.display = "none";
-    }
-}
-
-function hideElementByID(element) {
-    const elementToHide = document.getElementById(element);
-    if (elementToHide) {
-        elementToHide.style.display = "none";
-    }
-}
-
-function showElementByID(element) {
-    const elementToShow = document.getElementById(element);
-    if (elementToShow) {
-        elementToShow.style.display = "block";
     }
 }
