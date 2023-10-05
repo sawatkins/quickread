@@ -1,39 +1,28 @@
 window.onload = function () {
-    console.log("loaded summarize.js");
-
-    // Submits form to /upload endpoint
-    // document.getElementById("form-upload-doc").addEventListener("submit", async function (e) {
-    // });
-
-    const docUploadForm = document.getElementById("form-upload-doc");
-    docUploadForm.addEventListener("submit", handleDocUploadSummary);
-
-
-    // TODO sep 24
-    // (clear filename on back button) -- DONE
-    // remove loading page, move spinner to response page -- DONE
-    // make sure the above works -- DONE
-    // stats w/kv store
-    // file type, file amount, and file size checking and proper error codes
-    // (example gif on homepage)
-    // add icon licesnes -- DONE
-    // make linke hight for h2s better. -- DONE
-    // add example gif -- DONE
-    // add some limit to prevent abuse
-    // remove auth
-
+    document.getElementById("form-upload-doc").addEventListener("submit", handleDocUploadSummary);
+    document.getElementById("input-upload-doc").addEventListener('change', function () {
+        if (this.value && isProperFile()) {
+            document.getElementById('button-upload-doc').disabled = false;
+            displayFileName(true);
+        } else {
+            document.getElementById('button-upload-doc').disabled = true;
+            displayFileName(false);
+        }
+    });
 }
 
 function handleDocUploadSummary(event) {
-    // TODO error checking
     displaySummaryResultPage();
     event.preventDefault();
     const formData = new FormData(event.target);
     console.log(formData)
     uploadDoc(formData).then(data => {
-        console.log(data);
-        // TODO if presigned url is undefuned, do something else
-        summarizeDoc(data.presignedUrl)
+        if (data.presignedUrl) {
+            summarizeDoc(data.presignedUrl);
+        } else {
+            hideSpinner();
+            document.getElementById("summary-response-text").innerText = "File upload filed. Please try again."
+        }
     }).catch(error => {
         console.error(error)
     })
@@ -63,6 +52,22 @@ async function summarizeDoc(presignedUrl) {
         .catch(error => {
             console.log(error)
         })
+}
+
+function isProperFile() {
+    const fileInput = document.getElementById("input-upload-doc");
+    const fileName = fileInput.files[0].name;
+    const fileSize = fileInput.files[0].size;
+    const fileSizeInMB = Math.round(fileSize / (1024 * 1024));
+    if (fileSizeInMB > 50) {
+        alert('File size must be less than or equal to 50MB');
+        return false;
+    }
+    if (!fileName.endsWith('.pdf')) {
+        alert('Please select a PDF file');
+        return false;
+    }
+    return true;
 }
 
 function displaySummaryResultPage() {
@@ -100,60 +105,13 @@ function hideAllSummaryBlocks() {
     }
 }
 
-
-// Displays succes message on upload success
-function displayUploadSuccess() {
-    // const resultStatusText = document.getElementById("upload-result-status");
-    // resultStatusText.textContent = "File uploaded successfully"
-}
-
-// Displays failure and error message on upload failure
-function displayUploadFailure(error) {
-    // const resultStatusText = document.getElementById("upload-result-status");
-    // const resultStatusTextError = document.getElementById("upload-result-status-error");
-    // resultStatusText.textContent = "File upload failed. Please try again or submit a bug report.";
-    // resultStatusTextError.textContent = error;
-}
-
-// Clears the upload result status text
-function clearUploadResult() {
-    // const resultStatusText = document.getElementById("upload-result-status");
-    // const resultStatusTextError = document.getElementById("upload-result-status-error")
-    // resultStatusText.textContent = "";
-    // resultStatusTextError.textContent = "";
-}
-
-// Displays the file name in the UI after user selection
-function displayFileName() {
+function displayFileName(toDisplay) {
     const fileInput = document.getElementById('input-upload-doc');
     const fileName = document.getElementById('upload-doc-filename');
-
-    if (fileInput.files.length > 0) {
+    if (toDisplay) {
         fileName.textContent = "File: " + fileInput.files[0].name;
+
     } else {
         fileName.textContent = '';
-    }
-}
-
-function toggleDisplayByID(elementToToggle) {
-    const element = document.getElementById(elementToToggle);
-    if (element.style.display == "none") {
-        element.style.display = "block"; // maybe just have a way to remove the attribute instead
-    } else {
-        element.style.display = "none";
-    }
-}
-
-function hideElementByID(element) {
-    const elementToHide = document.getElementById(element);
-    if (elementToHide) {
-        elementToHide.style.display = "none";
-    }
-}
-
-function showElementByID(element) {
-    const elementToShow = document.getElementById(element);
-    if (elementToShow) {
-        elementToShow.style.display = "block";
     }
 }
