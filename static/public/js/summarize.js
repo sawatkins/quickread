@@ -1,12 +1,14 @@
 window.onload = function () {
     document.getElementById("form-upload-doc").addEventListener("submit", handleDocUploadSummary);
-    document.getElementById("input-upload-doc").addEventListener('change', function() {
-        if (this.value) {
-          document.getElementById('button-upload-doc').disabled = false;
+    document.getElementById("input-upload-doc").addEventListener('change', function () {
+        if (this.value && isProperFile()) {
+            document.getElementById('button-upload-doc').disabled = false;
+            displayFileName(true);
         } else {
-          document.getElementById('button-upload-doc').disabled = true;
+            document.getElementById('button-upload-doc').disabled = true;
+            displayFileName(false);
         }
-      });
+    });
 }
 
 function handleDocUploadSummary(event) {
@@ -50,6 +52,22 @@ async function summarizeDoc(presignedUrl) {
         })
 }
 
+function isProperFile() {
+    const fileInput = document.getElementById("input-upload-doc");
+    const fileName = fileInput.files[0].name;
+    const fileSize = fileInput.files[0].size;
+    const fileSizeInMB = Math.round(fileSize / (1024 * 1024));
+    if (fileSizeInMB > 50) {
+        alert('File size must be less than or equal to 50MB');
+        return false;
+    }
+    if (!fileName.endsWith('.pdf')) {
+        alert('Please select a PDF file');
+        return false;
+    }
+    return true;
+}
+
 function displaySummaryResultPage() {
     hideAllSummaryBlocks();
     const fileInput = document.getElementById('input-upload-doc');
@@ -85,36 +103,23 @@ function hideAllSummaryBlocks() {
     }
 }
 
-
-// Displays succes message on upload success
-function displayUploadSuccess() {
-    // const resultStatusText = document.getElementById("upload-result-status");
-    // resultStatusText.textContent = "File uploaded successfully"
-}
-
-// Displays failure and error message on upload failure
-function displayUploadFailure(error) {
-    // const resultStatusText = document.getElementById("upload-result-status");
-    // const resultStatusTextError = document.getElementById("upload-result-status-error");
-    // resultStatusText.textContent = "File upload failed. Please try again or submit a bug report.";
-    // resultStatusTextError.textContent = error;
-}
-
-// Clears the upload result status text
-function clearUploadResult() {
-    // const resultStatusText = document.getElementById("upload-result-status");
-    // const resultStatusTextError = document.getElementById("upload-result-status-error")
-    // resultStatusText.textContent = "";
-    // resultStatusTextError.textContent = "";
-}
-
 // Displays the file name in the UI after user selection
-function displayFileName() {
+// function displayFileName() {
+//     const fileInput = document.getElementById('input-upload-doc');
+//     const fileName = document.getElementById('upload-doc-filename');
+//     if (fileInput.files.length > 0) {
+//         fileName.textContent = "File: " + fileInput.files[0].name;
+//     } else {
+//         fileName.textContent = '';
+//     }
+// }
+
+function displayFileName(toDisplay) {
     const fileInput = document.getElementById('input-upload-doc');
     const fileName = document.getElementById('upload-doc-filename');
-
-    if (fileInput.files.length > 0) {
+    if (toDisplay) {
         fileName.textContent = "File: " + fileInput.files[0].name;
+
     } else {
         fileName.textContent = '';
     }
