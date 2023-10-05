@@ -12,15 +12,17 @@ window.onload = function () {
 }
 
 function handleDocUploadSummary(event) {
-    // TODO error checking
     displaySummaryResultPage();
     event.preventDefault();
     const formData = new FormData(event.target);
     console.log(formData)
     uploadDoc(formData).then(data => {
-        console.log(data);
-        // TODO if presigned url is undefuned, do something else
-        summarizeDoc(data.presignedUrl)
+        if (data.presignedUrl) {
+            summarizeDoc(data.presignedUrl);
+        } else {
+            hideSpinner();
+            document.getElementById("summary-response-text").innerText = "File upload filed. Please try again."
+        }
     }).catch(error => {
         console.error(error)
     })
@@ -103,17 +105,6 @@ function hideAllSummaryBlocks() {
     }
 }
 
-// Displays the file name in the UI after user selection
-// function displayFileName() {
-//     const fileInput = document.getElementById('input-upload-doc');
-//     const fileName = document.getElementById('upload-doc-filename');
-//     if (fileInput.files.length > 0) {
-//         fileName.textContent = "File: " + fileInput.files[0].name;
-//     } else {
-//         fileName.textContent = '';
-//     }
-// }
-
 function displayFileName(toDisplay) {
     const fileInput = document.getElementById('input-upload-doc');
     const fileName = document.getElementById('upload-doc-filename');
@@ -122,14 +113,5 @@ function displayFileName(toDisplay) {
 
     } else {
         fileName.textContent = '';
-    }
-}
-
-function toggleDisplayByID(elementToToggle) {
-    const element = document.getElementById(elementToToggle);
-    if (element.style.display == "none") {
-        element.style.display = "block"; // maybe just have a way to remove the attribute instead
-    } else {
-        element.style.display = "none";
     }
 }
