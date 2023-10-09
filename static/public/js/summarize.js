@@ -75,7 +75,7 @@ function displaySummaryResultPage() {
     const fileInput = document.getElementById('input-upload-doc');
     const fileName = document.getElementById('file-summary-name-response');
     fileName.innerText = fileInput.files[0].name;
-    showElementByID("summary-response");
+    document.getElementById("summary-response").style.display = "block"
     displaySpinner();
 }
 
@@ -94,7 +94,7 @@ function goToSummaryUploadPage() {
     document.getElementById('input-upload-doc').value = '';
     document.getElementById('upload-doc-filename').textContent = '';
     document.getElementById('summary-response').innerText = '';
-    showElementByID("document");
+    document.getElementById("document").style.display = "block";
 }
 
 function hideAllSummaryBlocks() {

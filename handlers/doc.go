@@ -55,7 +55,7 @@ func SummarizeDoc(s3PresignClient *s3.PresignClient, kagiClient *kagi.Client) fi
 	return func(c *fiber.Ctx) error {
 		// data validation & error handling todo here
 		presignedUrl := c.Query("presignedUrl")
-
+		log.Println(presignedUrl)
 		response, err := kagiClient.UniversalSummarizerCompletion(kagi.UniversalSummarizerParams{
 			URL:         presignedUrl,
 			SummaryType: kagi.SummaryTypeSummary,
